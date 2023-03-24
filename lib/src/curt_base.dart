@@ -58,7 +58,7 @@ class Curt {
 
     args.addAll(extra);
 
-    args.add(url);
+    args.add('"$url"');
 
     if (debug) {
       print('$executable ${args.join(' ')}');
@@ -133,4 +133,13 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
   }) async =>
       _run(url, headers: headers);
+
+  ///
+  ///
+  ///
+  Future<Response> delete(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      _run(url, headers: headers, extra: ['-X', 'DELETE']);
 }
