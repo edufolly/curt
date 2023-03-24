@@ -53,8 +53,15 @@ void main() {
     };
 
     for (MapEntry<String, BasicTestResult> entry in tests.entries) {
-      test(entry.key, () async {
+      test('GET ${entry.key}', () async {
         Response response = await curt.get(entry.key);
+        expect(response.statusCode, entry.value.statusCode);
+        expect(response.headers, entry.value.headersMatcher);
+        expect(response.body, entry.value.bodyMatcher);
+      });
+
+      test('DELETE ${entry.key}', () async {
+        Response response = await curt.delete(entry.key);
         expect(response.statusCode, entry.value.statusCode);
         expect(response.headers, entry.value.headersMatcher);
         expect(response.body, entry.value.bodyMatcher);
@@ -101,7 +108,7 @@ void main() {
     });
 
     ///
-    test('Simple GET', () async {
+    test('Simple HTTP GET', () async {
       Response response = await curt.get('http://$server:$httpPort/');
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
@@ -109,7 +116,7 @@ void main() {
     });
 
     ///
-    test('Simple GET', () async {
+    test('Simple HTTPS GET', () async {
       Response response = await curt.get('https://$server:$httpsPort/');
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);

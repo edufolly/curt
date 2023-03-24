@@ -58,7 +58,7 @@ class Curt {
 
     args.addAll(extra);
 
-    args.add('"$url"');
+    args.add(url);
 
     if (debug) {
       print('$executable ${args.join(' ')}');
