@@ -9,6 +9,7 @@ class Curt {
   final String executable;
   final bool debug;
   final bool insecure;
+  final bool silent;
   final int timeout;
 
   ///
@@ -18,20 +19,50 @@ class Curt {
     this.executable = 'curl',
     this.debug = false,
     this.insecure = false,
+    this.silent = true,
     this.timeout = 10000,
   });
 
   ///
   ///
   ///
-  Future<Response> get(String url) async {
+  List<String> _curlBase(Map<String, String> headers) {
     List<String> args = <String>['-v'];
 
     if (insecure) {
       args.add('-k');
     }
 
+    if (silent) {
+      args.add('-s');
+    }
+
+    for (final MapEntry<String, String> header in headers.entries) {
+      args
+        ..add('-H')
+        ..add('"${header.key}: ${header.value}"');
+    }
+
+    return args;
+  }
+
+  ///
+  ///
+  ///
+  Future<Response> _run(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+    List<String> extra = const <String>[],
+  }) async {
+    List<String> args = _curlBase(headers);
+
+    args.addAll(extra);
+
     args.add(url);
+
+    if (debug) {
+      print('$executable ${args.join(' ')}');
+    }
 
     ProcessResult run = await Process.run(executable, args).timeout(
       Duration(
@@ -48,14 +79,21 @@ class Curt {
       throw Exception('Error: ${run.exitCode} - ${run.stderr}');
     }
 
-    List<String> verboseLines = run.stderr.toString().split('\n');
+    return _parseResponse(run.stderr.toString(), run.stdout.toString());
+  }
+
+  ///
+  ///
+  ///
+  Response _parseResponse(String control, String body) {
+    List<String> verboseLines = control.split('\n');
 
     RegExp headerRegExp = RegExp(r'(?<key>.*?): (?<value>.*)');
 
     RegExp protocolRegExp = RegExp(r'HTTP(.*?) (?<statusCode>\d*)');
 
     int statusCode = -1;
-    Map<String, String> headers = <String, String>{};
+    Map<String, String> responseHeaders = <String, String>{};
 
     for (final String verboseLine in verboseLines) {
       if (debug) {
@@ -71,7 +109,7 @@ class Curt {
 
         RegExpMatch? match = headerRegExp.firstMatch(line);
         if (match != null) {
-          headers[match.namedGroup('key').toString()] =
+          responseHeaders[match.namedGroup('key').toString()] =
               match.namedGroup('value').toString();
           continue;
         }
@@ -84,8 +122,15 @@ class Curt {
       }
     }
 
-    String body = run.stdout.toString();
-
-    return Response(body, statusCode, headers: headers);
+    return Response(body, statusCode, headers: responseHeaders);
   }
+
+  ///
+  ///
+  ///
+  Future<Response> get(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      _run(url, headers: headers);
 }
