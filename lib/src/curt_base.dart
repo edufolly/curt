@@ -133,4 +133,13 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
   }) async =>
       _run(url, headers: headers);
+
+  ///
+  ///
+  ///
+  Future<Response> delete(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      _run(url, headers: headers, extra: ['-X', 'DELETE']);
 }
