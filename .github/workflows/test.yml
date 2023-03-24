@@ -1,4 +1,4 @@
-name: Test CI
+name: Pull Request Tests
 on:
   pull_request:
     types: [opened, reopened]
@@ -11,8 +11,6 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
-#    permissions:
-#      contents: write
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
@@ -22,13 +20,6 @@ jobs:
         with:
           channel: 'stable'
           cache: true
-
-#      - name: Install lcov
-#        env:
-#          DEBIAN_FRONTEND: noninteractive
-#        run: |
-#          sudo apt-get update -y
-#          sudo apt install -y lcov
 
       - name: Dart Pub Get
         timeout-minutes: 5
