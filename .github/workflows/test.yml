@@ -1,0 +1,44 @@
+name: Test CI
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  #########
+  # Tests #
+  #########
+  tests:
+    name: Tests
+    needs: [ boot ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+#    permissions:
+#      contents: write
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+#      - name: Install lcov
+#        env:
+#          DEBIAN_FRONTEND: noninteractive
+#        run: |
+#          sudo apt-get update -y
+#          sudo apt install -y lcov
+
+      - name: Dart Pub Get
+        timeout-minutes: 5
+        run: dart pub get
+
+      - name: Dart Analyze
+        timeout-minutes: 5
+        run: dart analyze --fatal-infos
+
+      - name: Dart Test
+        timeout-minutes: 5
+        run: dart test
