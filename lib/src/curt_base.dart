@@ -105,7 +105,7 @@ class Curt {
     ///
     List<String> verboseLines = run.stderr.toString().split('\n');
 
-    RegExp headerRegExp = RegExp(r'(?<key>.*?): (?<value>.*)');
+    RegExp headerRegExp = RegExp('(?<key>.*?): (?<value>.*)');
 
     RegExp protocolRegExp = RegExp(r'HTTP(.*?) (?<statusCode>\d*)');
 
@@ -155,7 +155,7 @@ class Curt {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
   }) {
-    Map<String, String> newHeaders = Map.of(headers);
+    Map<String, String> newHeaders = Map<String, String>.of(headers);
     newHeaders['Content-Type'] = 'application/json';
     return send(
       uri,

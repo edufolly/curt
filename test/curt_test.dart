@@ -52,7 +52,7 @@ void main() {
       ),
     };
 
-    for (MapEntry<String, BasicTestResult> entry in tests.entries) {
+    for (final MapEntry<String, BasicTestResult> entry in tests.entries) {
       test('GET ${entry.key}', () async {
         Response response = await curt.get(Uri.parse(entry.key));
         expect(response.statusCode, entry.value.statusCode);
@@ -118,7 +118,7 @@ void main() {
       expect(result.exitCode, 0, reason: result.stderr);
 
       /// Time to container starts.
-      await Future.delayed(const Duration(seconds: 10));
+      await Future<void>.delayed(const Duration(seconds: 10));
     });
 
     ///

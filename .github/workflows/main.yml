@@ -60,7 +60,7 @@ jobs:
         run: dart analyze --fatal-infos
 
       - name: Dart Test
-        run: dart test --coverage=coverage --reporter=github
+        run: dart test --coverage=coverage
 
       - name: Dart Publish Dry Run
         run: dart pub publish --dry-run
