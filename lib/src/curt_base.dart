@@ -13,6 +13,7 @@ class Curt {
   final bool silent;
   final bool followRedirects;
   final int timeout;
+  final String? userAgent;
 
   ///
   ///
@@ -24,12 +25,17 @@ class Curt {
     this.silent = true,
     this.followRedirects = false,
     this.timeout = 10000,
+    this.userAgent,
   });
 
   ///
   ///
   ///
-  List<String> _curlBase(Map<String, String> headers) {
+  Future<Response> _run(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    List<String> extra = const <String>[],
+  }) async {
     List<String> args = <String>['-v'];
 
     if (insecure) {
@@ -44,24 +50,17 @@ class Curt {
       args.add('-L');
     }
 
+    if (userAgent != null && userAgent!.isNotEmpty) {
+      args
+        ..add('-A')
+        ..add(userAgent!);
+    }
+
     for (final MapEntry<String, String> header in headers.entries) {
       args
         ..add('-H')
-        ..add('"${header.key}: ${header.value}"');
+        ..add('${header.key}: ${header.value}');
     }
-
-    return args;
-  }
-
-  ///
-  ///
-  ///
-  Future<Response> _run(
-    Uri uri, {
-    Map<String, String> headers = const <String, String>{},
-    List<String> extra = const <String>[],
-  }) async {
-    List<String> args = _curlBase(headers);
 
     args.addAll(extra);
 

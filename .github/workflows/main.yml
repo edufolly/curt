@@ -90,5 +90,3 @@ jobs:
           tag: v${{ needs.boot.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
-
-
