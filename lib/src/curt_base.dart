@@ -31,45 +31,60 @@ class Curt {
   ///
   ///
   ///
-  Future<Response> _run(
+  Future<Response> send(
     Uri uri, {
+    required String method,
     Map<String, String> headers = const <String, String>{},
-    List<String> extra = const <String>[],
+    String? data,
   }) async {
-    List<String> args = <String>['-v'];
+    List<String> args = <String>['-v', '-X', method];
 
+    /// Insecure
     if (insecure) {
       args.add('-k');
     }
 
+    /// Silent
     if (silent) {
       args.add('-s');
     }
 
+    /// Follow Redirects
     if (followRedirects) {
       args.add('-L');
     }
 
+    /// User Agent
     if (userAgent != null && userAgent!.isNotEmpty) {
       args
         ..add('-A')
         ..add(userAgent!);
     }
 
+    /// Headers
     for (final MapEntry<String, String> header in headers.entries) {
       args
         ..add('-H')
         ..add('${header.key}: ${header.value}');
     }
 
-    args.addAll(extra);
+    /// Body data
+    if (data != null) {
+      args
+        ..add('-d')
+        ..add(data);
+    }
 
+    /// URL
     args.add(uri.toString());
 
     if (debug) {
       print('$executable ${args.join(' ')}');
     }
 
+    ///
+    /// Run
+    ///
     ProcessResult run = await Process.run(executable, args).timeout(
       Duration(
         milliseconds: timeout,
@@ -85,14 +100,10 @@ class Curt {
       throw Exception('Error: ${run.exitCode} - ${run.stderr}');
     }
 
-    return _parseResponse(run.stderr.toString(), run.stdout.toString());
-  }
-
-  ///
-  ///
-  ///
-  Response _parseResponse(String control, String body) {
-    List<String> verboseLines = control.split('\n');
+    ///
+    /// Parse
+    ///
+    List<String> verboseLines = run.stderr.toString().split('\n');
 
     RegExp headerRegExp = RegExp(r'(?<key>.*?): (?<value>.*)');
 
@@ -128,27 +139,30 @@ class Curt {
       }
     }
 
-    return Response(body, statusCode, headers: responseHeaders);
+    return Response(
+      run.stdout.toString(),
+      statusCode,
+      headers: responseHeaders,
+    );
   }
 
   ///
   ///
   ///
-  Future<Response> run(
+  Future<Response> sendJson(
     Uri uri, {
     required String method,
+    required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
-    String? data,
-  }) async {
-    List<String> extra = <String>['-X', method];
-
-    if (data != null) {
-      extra
-        ..add('-d')
-        ..add(data);
-    }
-
-    return _run(uri, headers: headers, extra: extra);
+  }) {
+    Map<String, String> newHeaders = Map.of(headers);
+    newHeaders['Content-Type'] = 'application/json';
+    return send(
+      uri,
+      method: method,
+      headers: newHeaders,
+      data: json.encode(body),
+    );
   }
 
   ///
@@ -158,7 +172,7 @@ class Curt {
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      run(uri, method: 'GET', headers: headers);
+      send(uri, method: 'GET', headers: headers);
 
   ///
   ///
@@ -168,7 +182,7 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     String? data,
   }) async =>
-      run(uri, method: 'POST', headers: headers, data: data);
+      send(uri, method: 'POST', headers: headers, data: data);
 
   ///
   ///
@@ -177,11 +191,8 @@ class Curt {
     Uri uri, {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
-  }) async {
-    Map<String, String> newHeaders = Map.of(headers);
-    newHeaders['Content-Type'] = 'application/json';
-    return post(uri, headers: newHeaders, data: json.encode(body));
-  }
+  }) async =>
+      sendJson(uri, method: 'POST', headers: headers, body: body);
 
   ///
   ///
@@ -191,7 +202,17 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     String? data,
   }) async =>
-      run(uri, method: 'PUT', headers: headers, data: data);
+      send(uri, method: 'PUT', headers: headers, data: data);
+
+  ///
+  ///
+  ///
+  Future<Response> putJson(
+    Uri uri, {
+    required Map<String, dynamic> body,
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      sendJson(uri, method: 'PUT', headers: headers, body: body);
 
   ///
   ///
@@ -200,5 +221,5 @@ class Curt {
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      run(uri, method: 'DELETE', headers: headers);
+      send(uri, method: 'DELETE', headers: headers);
 }
