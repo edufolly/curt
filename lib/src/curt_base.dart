@@ -137,6 +137,25 @@ class Curt {
   ///
   ///
   ///
+  Future<Response> post(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async {
+    List<String> extra = <String>['-X', 'POST'];
+
+    if (data != null) {
+      extra
+        ..add('-d')
+        ..add(data);
+    }
+
+    return _run(url, headers: headers, extra: extra);
+  }
+
+  ///
+  ///
+  ///
   Future<Response> delete(
     String url, {
     Map<String, String> headers = const <String, String>{},

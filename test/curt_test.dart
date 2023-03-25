@@ -116,8 +116,24 @@ void main() {
     });
 
     ///
+    test('Simple HTTP POST', () async {
+      Response response = await curt.post('http://$server:$httpPort/');
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
     test('Simple HTTPS GET', () async {
       Response response = await curt.get('https://$server:$httpsPort/');
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
+    test('Simple HTTPS POST', () async {
+      Response response = await curt.post('https://$server:$httpsPort/');
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
