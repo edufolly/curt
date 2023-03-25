@@ -11,6 +11,7 @@ class Curt {
   final bool debug;
   final bool insecure;
   final bool silent;
+  final bool followRedirects;
   final int timeout;
 
   ///
@@ -21,6 +22,7 @@ class Curt {
     this.debug = false,
     this.insecure = false,
     this.silent = true,
+    this.followRedirects = false,
     this.timeout = 10000,
   });
 
@@ -36,6 +38,10 @@ class Curt {
 
     if (silent) {
       args.add('-s');
+    }
+
+    if (followRedirects) {
+      args.add('-L');
     }
 
     for (final MapEntry<String, String> header in headers.entries) {
@@ -129,21 +135,13 @@ class Curt {
   ///
   ///
   ///
-  Future<Response> get(
+  Future<Response> run(
     Uri uri, {
-    Map<String, String> headers = const <String, String>{},
-  }) async =>
-      _run(uri, headers: headers);
-
-  ///
-  ///
-  ///
-  Future<Response> post(
-    Uri uri, {
+    required String method,
     Map<String, String> headers = const <String, String>{},
     String? data,
   }) async {
-    List<String> extra = <String>['-X', 'POST'];
+    List<String> extra = <String>['-X', method];
 
     if (data != null) {
       extra
@@ -153,6 +151,25 @@ class Curt {
 
     return _run(uri, headers: headers, extra: extra);
   }
+
+  ///
+  ///
+  ///
+  Future<Response> get(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      run(uri, method: 'GET', headers: headers);
+
+  ///
+  ///
+  ///
+  Future<Response> post(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async =>
+      run(uri, method: 'POST', headers: headers, data: data);
 
   ///
   ///
@@ -170,9 +187,19 @@ class Curt {
   ///
   ///
   ///
+  Future<Response> put(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async =>
+      run(uri, method: 'PUT', headers: headers, data: data);
+
+  ///
+  ///
+  ///
   Future<Response> delete(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      _run(uri, headers: headers, extra: ['-X', 'DELETE']);
+      run(uri, method: 'DELETE', headers: headers);
 }
