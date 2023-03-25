@@ -50,7 +50,7 @@ class Curt {
   ///
   ///
   Future<Response> _run(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
     List<String> extra = const <String>[],
   }) async {
@@ -58,7 +58,7 @@ class Curt {
 
     args.addAll(extra);
 
-    args.add(url);
+    args.add(uri.toString());
 
     if (debug) {
       print('$executable ${args.join(' ')}');
@@ -129,16 +129,16 @@ class Curt {
   ///
   ///
   Future<Response> get(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      _run(url, headers: headers);
+      _run(uri, headers: headers);
 
   ///
   ///
   ///
   Future<Response> post(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
     String? data,
   }) async {
@@ -150,15 +150,15 @@ class Curt {
         ..add(data);
     }
 
-    return _run(url, headers: headers, extra: extra);
+    return _run(uri, headers: headers, extra: extra);
   }
 
   ///
   ///
   ///
   Future<Response> delete(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      _run(url, headers: headers, extra: ['-X', 'DELETE']);
+      _run(uri, headers: headers, extra: ['-X', 'DELETE']);
 }

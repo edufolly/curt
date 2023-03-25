@@ -54,14 +54,21 @@ void main() {
 
     for (MapEntry<String, BasicTestResult> entry in tests.entries) {
       test('GET ${entry.key}', () async {
-        Response response = await curt.get(entry.key);
+        Response response = await curt.get(Uri.parse(entry.key));
+        expect(response.statusCode, entry.value.statusCode);
+        expect(response.headers, entry.value.headersMatcher);
+        expect(response.body, entry.value.bodyMatcher);
+      });
+
+      test('POST ${entry.key}', () async {
+        Response response = await curt.post(Uri.parse(entry.key));
         expect(response.statusCode, entry.value.statusCode);
         expect(response.headers, entry.value.headersMatcher);
         expect(response.body, entry.value.bodyMatcher);
       });
 
       test('DELETE ${entry.key}', () async {
-        Response response = await curt.delete(entry.key);
+        Response response = await curt.delete(Uri.parse(entry.key));
         expect(response.statusCode, entry.value.statusCode);
         expect(response.headers, entry.value.headersMatcher);
         expect(response.body, entry.value.bodyMatcher);
@@ -109,7 +116,8 @@ void main() {
 
     ///
     test('Simple HTTP GET', () async {
-      Response response = await curt.get('http://$server:$httpPort/');
+      Response response =
+          await curt.get(Uri.parse('http://$server:$httpPort/'));
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
@@ -117,7 +125,8 @@ void main() {
 
     ///
     test('Simple HTTP POST', () async {
-      Response response = await curt.post('http://$server:$httpPort/');
+      Response response =
+          await curt.post(Uri.parse('http://$server:$httpPort/'));
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
@@ -125,7 +134,8 @@ void main() {
 
     ///
     test('Simple HTTPS GET', () async {
-      Response response = await curt.get('https://$server:$httpsPort/');
+      Response response =
+          await curt.get(Uri.parse('https://$server:$httpsPort/'));
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
@@ -133,7 +143,8 @@ void main() {
 
     ///
     test('Simple HTTPS POST', () async {
-      Response response = await curt.post('https://$server:$httpsPort/');
+      Response response =
+          await curt.post(Uri.parse('https://$server:$httpsPort/'));
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
