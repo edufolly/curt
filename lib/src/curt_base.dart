@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -151,6 +152,19 @@ class Curt {
     }
 
     return _run(uri, headers: headers, extra: extra);
+  }
+
+  ///
+  ///
+  ///
+  Future<Response> postJson(
+    Uri uri, {
+    required Map<String, dynamic> body,
+    Map<String, String> headers = const <String, String>{},
+  }) async {
+    Map<String, String> newHeaders = Map.of(headers);
+    newHeaders['Content-Type'] = 'application/json';
+    return post(uri, headers: newHeaders, data: json.encode(body));
   }
 
   ///
