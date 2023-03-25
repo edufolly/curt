@@ -1,0 +1,92 @@
+name: Main Release
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ########
+  # Boot #
+  ########
+  boot:
+    name: Boot
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version-step.outputs.version }}
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Get Pubspec Version
+        id: version-step
+        run: |
+          export VERSION=$(grep 'version:' pubspec.yaml | cut -c 10- | cut -f 1 -d '+')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+
+  ###################
+  # Tests & Release #
+  ###################
+  tests:
+    name: Tests & Release
+    needs: [ boot ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+#    permissions:
+#      contents: write
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+#      - name: Install lcov
+#        env:
+#          DEBIAN_FRONTEND: noninteractive
+#        run: |
+#          sudo apt-get update -y
+#          sudo apt install -y lcov
+
+      - name: Dart Pub Get
+        timeout-minutes: 5
+        run: dart pub get
+
+      - name: Dart Analyze
+        timeout-minutes: 5
+        run: dart analyze --fatal-infos
+
+      - name: Dart Test
+        run: dart test --coverage=coverage
+
+      - name: Dart Publish Dry Run
+        run: dart pub publish --dry-run
+
+#      - name: Creating Test Coverage HTML
+#        run: |
+#          genhtml coverage/lcov.info \
+#            --output-directory coverage/html \
+#            --title "curt" \
+#            --show-details
+
+#      - name: Publishing to GitHub Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          publish_dir: ./coverage/html
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Creating a GitHub Tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          custom_tag: ${{ needs.boot.outputs.version }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ needs.boot.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true

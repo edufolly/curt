@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -10,7 +11,9 @@ class Curt {
   final bool debug;
   final bool insecure;
   final bool silent;
+  final bool followRedirects;
   final int timeout;
+  final String? userAgent;
 
   ///
   ///
@@ -20,50 +23,68 @@ class Curt {
     this.debug = false,
     this.insecure = false,
     this.silent = true,
+    this.followRedirects = false,
     this.timeout = 10000,
+    this.userAgent,
   });
 
   ///
   ///
   ///
-  List<String> _curlBase(Map<String, String> headers) {
-    List<String> args = <String>['-v'];
+  Future<Response> send(
+    Uri uri, {
+    required String method,
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async {
+    List<String> args = <String>['-v', '-X', method];
 
+    /// Insecure
     if (insecure) {
       args.add('-k');
     }
 
+    /// Silent
     if (silent) {
       args.add('-s');
     }
 
+    /// Follow Redirects
+    if (followRedirects) {
+      args.add('-L');
+    }
+
+    /// User Agent
+    if (userAgent != null && userAgent!.isNotEmpty) {
+      args
+        ..add('-A')
+        ..add(userAgent!);
+    }
+
+    /// Headers
     for (final MapEntry<String, String> header in headers.entries) {
       args
         ..add('-H')
-        ..add('"${header.key}: ${header.value}"');
+        ..add('${header.key}: ${header.value}');
     }
 
-    return args;
-  }
+    /// Body data
+    if (data != null) {
+      args
+        ..add('-d')
+        ..add(data);
+    }
 
-  ///
-  ///
-  ///
-  Future<Response> _run(
-    String url, {
-    Map<String, String> headers = const <String, String>{},
-    List<String> extra = const <String>[],
-  }) async {
-    List<String> args = _curlBase(headers);
-
-    args.addAll(extra);
-
-    args.add(url);
+    /// URL
+    args.add(uri.toString());
 
     if (debug) {
       print('$executable ${args.join(' ')}');
     }
 
+    ///
+    /// Run
+    ///
     ProcessResult run = await Process.run(executable, args).timeout(
       Duration(
         milliseconds: timeout,
@@ -79,16 +100,12 @@ class Curt {
       throw Exception('Error: ${run.exitCode} - ${run.stderr}');
     }
 
-    return _parseResponse(run.stderr.toString(), run.stdout.toString());
-  }
+    ///
+    /// Parse
+    ///
+    List<String> verboseLines = run.stderr.toString().split('\n');
 
-  ///
-  ///
-  ///
-  Response _parseResponse(String control, String body) {
-    List<String> verboseLines = control.split('\n');
-
-    RegExp headerRegExp = RegExp(r'(?<key>.*?): (?<value>.*)');
+    RegExp headerRegExp = RegExp('(?<key>.*?): (?<value>.*)');
 
     RegExp protocolRegExp = RegExp(r'HTTP(.*?) (?<statusCode>\d*)');
 
@@ -122,24 +139,87 @@ class Curt {
       }
     }
 
-    return Response(body, statusCode, headers: responseHeaders);
+    return Response(
+      run.stdout.toString(),
+      statusCode,
+      headers: responseHeaders,
+    );
+  }
+
+  ///
+  ///
+  ///
+  Future<Response> sendJson(
+    Uri uri, {
+    required String method,
+    required Map<String, dynamic> body,
+    Map<String, String> headers = const <String, String>{},
+  }) {
+    Map<String, String> newHeaders = Map<String, String>.of(headers);
+    newHeaders['Content-Type'] = 'application/json';
+    return send(
+      uri,
+      method: method,
+      headers: newHeaders,
+      data: json.encode(body),
+    );
   }
 
   ///
   ///
   ///
   Future<Response> get(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      _run(url, headers: headers);
+      send(uri, method: 'GET', headers: headers);
+
+  ///
+  ///
+  ///
+  Future<Response> post(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async =>
+      send(uri, method: 'POST', headers: headers, data: data);
+
+  ///
+  ///
+  ///
+  Future<Response> postJson(
+    Uri uri, {
+    required Map<String, dynamic> body,
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      sendJson(uri, method: 'POST', headers: headers, body: body);
+
+  ///
+  ///
+  ///
+  Future<Response> put(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    String? data,
+  }) async =>
+      send(uri, method: 'PUT', headers: headers, data: data);
+
+  ///
+  ///
+  ///
+  Future<Response> putJson(
+    Uri uri, {
+    required Map<String, dynamic> body,
+    Map<String, String> headers = const <String, String>{},
+  }) async =>
+      sendJson(uri, method: 'PUT', headers: headers, body: body);
 
   ///
   ///
   ///
   Future<Response> delete(
-    String url, {
+    Uri uri, {
     Map<String, String> headers = const <String, String>{},
   }) async =>
-      _run(url, headers: headers, extra: ['-X', 'DELETE']);
+      send(uri, method: 'DELETE', headers: headers);
 }
