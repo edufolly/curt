@@ -32,8 +32,8 @@ jobs:
     needs: [ boot ]
     runs-on: ubuntu-latest
     timeout-minutes: 20
-#    permissions:
-#      contents: write
+    permissions:
+      contents: write
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
@@ -55,15 +55,15 @@ jobs:
         timeout-minutes: 5
         run: dart pub get
 
+      - name: Dart Publish Dry Run
+        run: dart pub publish --dry-run
+
       - name: Dart Analyze
         timeout-minutes: 5
         run: dart analyze --fatal-infos
 
       - name: Dart Test
         run: dart test --coverage=coverage
-
-      - name: Dart Publish Dry Run
-        run: dart pub publish --dry-run
 
 #      - name: Creating Test Coverage HTML
 #        run: |
@@ -89,4 +89,4 @@ jobs:
         with:
           tag: v${{ needs.boot.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
+#          allowUpdates: true
