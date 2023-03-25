@@ -67,6 +67,13 @@ void main() {
         expect(response.body, entry.value.bodyMatcher);
       });
 
+      test('PUT ${entry.key}', () async {
+        Response response = await curt.put(Uri.parse(entry.key));
+        expect(response.statusCode, entry.value.statusCode);
+        expect(response.headers, entry.value.headersMatcher);
+        expect(response.body, entry.value.bodyMatcher);
+      });
+
       test('DELETE ${entry.key}', () async {
         Response response = await curt.delete(Uri.parse(entry.key));
         expect(response.statusCode, entry.value.statusCode);
@@ -133,6 +140,24 @@ void main() {
     });
 
     ///
+    test('Simple HTTP PUT', () async {
+      Response response =
+          await curt.put(Uri.parse('http://$server:$httpPort/'));
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
+    test('Simple HTTP DELETE', () async {
+      Response response =
+          await curt.delete(Uri.parse('http://$server:$httpPort/'));
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
     test('Simple HTTPS GET', () async {
       Response response =
           await curt.get(Uri.parse('https://$server:$httpsPort/'));
@@ -145,6 +170,24 @@ void main() {
     test('Simple HTTPS POST', () async {
       Response response =
           await curt.post(Uri.parse('https://$server:$httpsPort/'));
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
+    test('Simple HTTPS PUT', () async {
+      Response response =
+          await curt.put(Uri.parse('https://$server:$httpsPort/'));
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+
+    ///
+    test('Simple HTTPS DELETE', () async {
+      Response response =
+          await curt.delete(Uri.parse('https://$server:$httpsPort/'));
       expect(response.statusCode, 200);
       expect(response.headers, isNotEmpty);
       expect(response.body, isNotEmpty);
