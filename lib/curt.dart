@@ -1,3 +1,3 @@
 library curt;
 
-export 'src/curt_base.dart';
+export 'src/curt.dart';

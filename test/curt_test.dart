@@ -1,26 +1,10 @@
 import 'dart:io';
 
-import 'package:curt/src/curt_base.dart';
+import 'package:curt/src/curt.dart';
 import 'package:http/http.dart';
 import 'package:test/test.dart';
 
-///
-///
-///
-class BasicTestResult {
-  final int statusCode;
-  final Matcher headersMatcher;
-  final Matcher bodyMatcher;
-
-  ///
-  ///
-  ///
-  BasicTestResult({
-    required this.statusCode,
-    required this.headersMatcher,
-    required this.bodyMatcher,
-  });
-}
+import '../helpers/basic_test_result.dart';
 
 ///
 ///
@@ -112,7 +96,7 @@ void main() {
         '-p',
         '$httpsPort:8443',
         '-d',
-        containerImage
+        containerImage,
       ]).timeout(timeLimit);
 
       expect(result.exitCode, 0, reason: result.stderr);

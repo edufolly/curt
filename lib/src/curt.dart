@@ -157,6 +157,7 @@ class Curt {
   }) {
     Map<String, String> newHeaders = Map<String, String>.of(headers);
     newHeaders['Content-Type'] = 'application/json';
+
     return send(
       uri,
       method: method,
@@ -171,7 +172,7 @@ class Curt {
   Future<Response> get(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
-  }) async =>
+  }) =>
       send(uri, method: 'GET', headers: headers);
 
   ///
@@ -181,7 +182,7 @@ class Curt {
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
     String? data,
-  }) async =>
+  }) =>
       send(uri, method: 'POST', headers: headers, data: data);
 
   ///
@@ -191,7 +192,7 @@ class Curt {
     Uri uri, {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
-  }) async =>
+  }) =>
       sendJson(uri, method: 'POST', headers: headers, body: body);
 
   ///
@@ -201,7 +202,7 @@ class Curt {
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
     String? data,
-  }) async =>
+  }) =>
       send(uri, method: 'PUT', headers: headers, data: data);
 
   ///
@@ -211,7 +212,7 @@ class Curt {
     Uri uri, {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
-  }) async =>
+  }) =>
       sendJson(uri, method: 'PUT', headers: headers, body: body);
 
   ///
@@ -220,6 +221,6 @@ class Curt {
   Future<Response> delete(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
-  }) async =>
+  }) =>
       send(uri, method: 'DELETE', headers: headers);
 }

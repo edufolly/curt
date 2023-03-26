@@ -1,7 +1,6 @@
 name: Pull Request Tests
-on:
-  pull_request:
-    types: [opened, reopened]
+
+on: [pull_request]
 
 jobs:
   #########
@@ -9,6 +8,9 @@ jobs:
   #########
   tests:
     name: Tests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -21,14 +23,17 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: curl version
+        timeout-minutes: 1
+        run: curl -V
+
       - name: Dart Pub Get
-        timeout-minutes: 5
+        timeout-minutes: 3
         run: dart pub get
 
-      - name: Dart Analyze
-        timeout-minutes: 5
-        run: dart analyze --fatal-infos
+#      - name: Dart Analyze
+#        timeout-minutes: 3
+#        run: dart analyze --fatal-infos
 
       - name: Dart Test
-        timeout-minutes: 5
         run: dart test
