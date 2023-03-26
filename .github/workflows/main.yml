@@ -52,18 +52,26 @@ jobs:
 #          sudo apt install -y lcov
 
       - name: Dart Pub Get
-        timeout-minutes: 5
+        timeout-minutes: 3
         run: dart pub get
 
-      - name: Dart Publish Dry Run
-        run: dart pub publish --dry-run
+#      - name: Dart Publish Dry Run
+#        run: dart pub publish --dry-run
 
       - name: Dart Analyze
-        timeout-minutes: 5
+        timeout-minutes: 3
         run: dart analyze --fatal-infos
 
       - name: Dart Test
         run: dart test --coverage=coverage
+
+      - name: Publish Dart package
+        uses: k-paxian/dart-package-publisher@master
+        with:
+          accessToken: ${{ secrets.OAUTH_ACCESS_TOKEN }}
+          refreshToken: ${{ secrets.OAUTH_REFRESH_TOKEN }}
+          skipTests: true
+          format: true
 
 #      - name: Creating Test Coverage HTML
 #        run: |
