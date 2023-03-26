@@ -1,6 +1,6 @@
 name: curt
 description: Simple wrapper for curl in dart.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/edufolly/curt
 
 environment:
@@ -10,6 +10,7 @@ dependencies:
   http: ^0.13.5
 
 dev_dependencies:
+  coverage: ^1.6.3
   dart_code_metrics: ^5.7.0
   lints: ^2.0.0
   markdown: ^7.0.1

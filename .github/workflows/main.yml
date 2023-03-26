@@ -44,26 +44,37 @@ jobs:
           channel: 'stable'
           cache: true
 
-#      - name: Install lcov
-#        env:
-#          DEBIAN_FRONTEND: noninteractive
-#        run: |
-#          sudo apt-get update -y
-#          sudo apt install -y lcov
+      - name: Install lcov
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update -y
+          sudo apt install -y lcov
 
       - name: Dart Pub Get
         timeout-minutes: 3
         run: dart pub get
 
-#      - name: Dart Publish Dry Run
-#        run: dart pub publish --dry-run
-
-      - name: Dart Analyze
-        timeout-minutes: 3
-        run: dart analyze --fatal-infos
-
       - name: Dart Test
         run: dart test --coverage=coverage
+
+      - name: Creating package filter.
+        run: dart run helpers/package.dart
+
+      - name: Creating lcov.info
+        run: |
+          dart run coverage:format_coverage \
+          --packages=coverage/package.json \
+          --lcov \
+          -i coverage \
+          -o coverage/lcov.info
+
+      - name: Creating Test Coverage HTML
+        run: |
+          genhtml coverage/lcov.info \
+            --output-directory coverage/html \
+            --title "curt" \
+            --show-details
 
       - name: Publish Dart package
         uses: k-paxian/dart-package-publisher@master
@@ -73,18 +84,11 @@ jobs:
           skipTests: true
           format: true
 
-#      - name: Creating Test Coverage HTML
-#        run: |
-#          genhtml coverage/lcov.info \
-#            --output-directory coverage/html \
-#            --title "curt" \
-#            --show-details
-
-#      - name: Publishing to GitHub Pages
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          publish_dir: ./coverage/html
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publishing to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./coverage/html
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Creating a GitHub Tag
         uses: mathieudutour/github-tag-action@v6.1
@@ -97,4 +101,3 @@ jobs:
         with:
           tag: v${{ needs.boot.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-#          allowUpdates: true

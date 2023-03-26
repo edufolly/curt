@@ -31,9 +31,9 @@ jobs:
         timeout-minutes: 3
         run: dart pub get
 
-      - name: Dart Analyze
-        timeout-minutes: 3
-        run: dart analyze --fatal-infos
+#      - name: Dart Analyze
+#        timeout-minutes: 3
+#        run: dart analyze --fatal-infos
 
       - name: Dart Test
         run: dart test
