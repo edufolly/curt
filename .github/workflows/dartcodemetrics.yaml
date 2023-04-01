@@ -1,6 +1,8 @@
 name: Dart Code Metrics
 
-on: [push]
+on:
+  push:
+    branches-ignore: [ 'main' ]
 
 jobs:
   check:

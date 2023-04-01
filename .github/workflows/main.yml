@@ -79,7 +79,7 @@ jobs:
       - name: Creating package filter.
         run: dart run helpers/create_index.dart README.md coverage/html/index.html
 
-      - name: Publish Dart package
+      - name: Publish Dart Package
         uses: k-paxian/dart-package-publisher@master
         with:
           accessToken: ${{ secrets.OAUTH_ACCESS_TOKEN }}
