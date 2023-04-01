@@ -70,12 +70,12 @@ void main() {
   ///
   group('Basic Local Tests', () {
     final Curt curt = Curt(insecure: true);
-    final String server = '127.0.0.1';
-    final int httpPort = 8080;
-    final int httpsPort = 8443;
-    final Duration timeLimit = const Duration(seconds: 15);
+    const String server = '127.0.0.1';
+    const int httpPort = 8080;
+    const int httpsPort = 8443;
+    const Duration timeLimit = Duration(seconds: 15);
 
-    final String containerImage = 'mendhak/http-https-echo:29';
+    const String containerImage = 'mendhak/http-https-echo:29';
     final String containerName = 'server${DateTime.now().millisecond}';
 
     ///
