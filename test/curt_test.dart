@@ -139,6 +139,7 @@ void main() {
 
         result = await Process.run('docker', <String>[
           'run',
+          if (Platform.isWindows) ...<String>['--experimental'],
           '--rm',
           '--name',
           containerName,
