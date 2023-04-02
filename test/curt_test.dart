@@ -135,19 +135,6 @@ void main() {
           '--version',
         ]).timeout(timeLimit);
 
-        print(result.stdout);
-
-        expect(result.exitCode, 0, reason: result.stderr);
-
-        result = await Process.run('docker', <String>[
-          'pull',
-          '--platform',
-          'linux',
-          containerImage,
-        ]).timeout(timeLimit);
-
-        print(result.stdout);
-
         expect(result.exitCode, 0, reason: result.stderr);
 
         result = await Process.run('docker', <String>[
@@ -162,8 +149,6 @@ void main() {
           '-d',
           containerImage,
         ]).timeout(timeLimit);
-
-        print(result.stdout);
 
         expect(result.exitCode, 0, reason: result.stderr);
 
@@ -256,7 +241,8 @@ void main() {
       });
     },
     onPlatform: <String, dynamic>{
-      'mac-os': Skip('No docker installed.'),
+      'mac-os': Skip('No docker installed on GitHub actions.'),
+      'windows': Skip('Need a windows container image.'),
     },
   );
 }
