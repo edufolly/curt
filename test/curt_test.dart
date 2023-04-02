@@ -135,11 +135,23 @@ void main() {
           '--version',
         ]).timeout(timeLimit);
 
+        print(result.stdout);
+
+        expect(result.exitCode, 0, reason: result.stderr);
+
+        result = await Process.run('docker', <String>[
+          'pull',
+          '--platform',
+          'linux',
+          containerImage,
+        ]).timeout(timeLimit);
+
+        print(result.stdout);
+
         expect(result.exitCode, 0, reason: result.stderr);
 
         result = await Process.run('docker', <String>[
           'run',
-          if (Platform.isWindows) ...<String>['--experimental'],
           '--rm',
           '--name',
           containerName,
@@ -150,6 +162,8 @@ void main() {
           '-d',
           containerImage,
         ]).timeout(timeLimit);
+
+        print(result.stdout);
 
         expect(result.exitCode, 0, reason: result.stderr);
 
