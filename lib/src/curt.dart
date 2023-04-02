@@ -13,7 +13,6 @@ class Curt {
   final bool silent;
   final bool followRedirects;
   final int timeout;
-  final String? userAgent;
 
   ///
   ///
@@ -25,7 +24,6 @@ class Curt {
     this.silent = true,
     this.followRedirects = false,
     this.timeout = 10000,
-    this.userAgent,
   });
 
   ///
@@ -52,13 +50,6 @@ class Curt {
     /// Follow Redirects
     if (followRedirects) {
       args.add('-L');
-    }
-
-    /// User Agent
-    if (userAgent != null && userAgent!.isNotEmpty) {
-      args
-        ..add('-A')
-        ..add(userAgent!);
     }
 
     /// Headers
