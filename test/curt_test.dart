@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:curt/src/curt.dart';
 import 'package:http/http.dart';
@@ -10,6 +11,7 @@ import '../helpers/basic_test_result.dart';
 ///
 ///
 void main() {
+  ///
   group('Basic Tests', () {
     final Curt curt = Curt();
 
@@ -63,6 +65,53 @@ void main() {
         expect(response.statusCode, entry.value.statusCode);
         expect(response.headers, entry.value.headersMatcher);
         expect(response.body, entry.value.bodyMatcher);
+      });
+    }
+  });
+
+  ///
+  group('Redirect Tests', () {
+    final Curt curt = Curt(followRedirects: true);
+
+    test('Redirect', () async {
+      Uri uri = Uri(
+        scheme: 'https',
+        host: 'httpbin.org',
+        path: 'redirect-to',
+        queryParameters: <String, dynamic>{
+          'url': 'https://httpbin.org/status/200',
+        },
+      );
+
+      Response response = await curt.get(uri);
+
+      expect(response.statusCode, 200);
+      expect(response.headers, isNotEmpty);
+      expect(response.headers.containsKey('location'), isFalse);
+      expect(response.body, isEmpty);
+    });
+  });
+
+  ///
+  group('Body Size Tests', () {
+    final Curt curt = Curt();
+
+    for (int gen = 0; gen < 3; gen++) {
+      int bytes = Random().nextInt(1024);
+      test('Body Length $bytes', () async {
+        Response response = await curt.get(
+          Uri.parse('http://httpbin.org/range/$bytes'),
+        );
+
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.headers.containsKey('Content-Length'), isTrue);
+        expect(
+          int.tryParse(response.headers['Content-Length'].toString()) ?? -1,
+          bytes,
+        );
+        expect(response.body, isNotEmpty);
+        expect(response.body.length, bytes);
       });
     }
   });

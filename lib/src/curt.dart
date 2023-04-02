@@ -126,6 +126,7 @@ class Curt {
         if (match != null) {
           statusCode =
               int.tryParse(match.namedGroup('statusCode').toString()) ?? -1;
+          responseHeaders.clear();
         }
       }
     }

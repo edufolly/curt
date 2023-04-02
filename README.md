@@ -8,6 +8,14 @@ Simple wrapper for curl in dart.
 [![curt](https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main "build")](https://github.com/edufolly/curt)
 [![CoverageReport](https://img.shields.io/badge/coverage-report-blue "coverage report")](https://edufolly.github.io/curt/coverage/)
 
-## Code Example
+## Motivation
+
+Allow https connections with TLS lower than 1.2.
+
+## Funding
+
+[![BuyMeACoffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg)](https://www.buymeacoffee.com/edufolly)
+
+### Code Example
 
 https://github.com/edufolly/curt/blob/main/example/curt_example.dart

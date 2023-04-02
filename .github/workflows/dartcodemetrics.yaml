@@ -8,8 +8,6 @@ jobs:
   check:
     name: dart-code-metrics-action
     runs-on: ubuntu-latest
-#    permissions:
-#      contents: write
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
