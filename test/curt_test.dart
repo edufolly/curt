@@ -117,123 +117,129 @@ void main() {
   });
 
   ///
-  group('Basic Local Tests', () {
-    final Curt curt = Curt(insecure: true);
-    const String server = '127.0.0.1';
-    const int httpPort = 8080;
-    const int httpsPort = 8443;
-    const Duration timeLimit = Duration(seconds: 15);
+  group(
+    'Basic Local Tests',
+    () {
+      final Curt curt = Curt(insecure: true);
+      const String server = '127.0.0.1';
+      const int httpPort = 8080;
+      const int httpsPort = 8443;
+      const Duration timeLimit = Duration(seconds: 15);
 
-    const String containerImage = 'mendhak/http-https-echo:29';
-    final String containerName = 'server${DateTime.now().millisecond}';
+      const String containerImage = 'mendhak/http-https-echo:29';
+      final String containerName = 'server${DateTime.now().millisecond}';
 
-    ///
-    setUpAll(() async {
-      ProcessResult result = await Process.run('docker', <String>[
-        '--version',
-      ]).timeout(timeLimit);
+      ///
+      setUpAll(() async {
+        ProcessResult result = await Process.run('docker', <String>[
+          '--version',
+        ]).timeout(timeLimit);
 
-      expect(result.exitCode, 0, reason: result.stderr);
+        expect(result.exitCode, 0, reason: result.stderr);
 
-      result = await Process.run('docker', <String>[
-        'run',
-        '--rm',
-        '--name',
-        containerName,
-        '-p',
-        '$httpPort:8080',
-        '-p',
-        '$httpsPort:8443',
-        '-d',
-        containerImage,
-      ]).timeout(timeLimit);
+        result = await Process.run('docker', <String>[
+          'run',
+          '--rm',
+          '--name',
+          containerName,
+          '-p',
+          '$httpPort:8080',
+          '-p',
+          '$httpsPort:8443',
+          '-d',
+          containerImage,
+        ]).timeout(timeLimit);
 
-      expect(result.exitCode, 0, reason: result.stderr);
+        expect(result.exitCode, 0, reason: result.stderr);
 
-      /// Time to container starts.
-      await Future<void>.delayed(const Duration(seconds: 10));
-    });
+        /// Time to container starts.
+        await Future<void>.delayed(const Duration(seconds: 10));
+      });
 
-    ///
-    test('Simple HTTP GET', () async {
-      Response response =
-          await curt.get(Uri.parse('http://$server:$httpPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTP GET', () async {
+        Response response =
+            await curt.get(Uri.parse('http://$server:$httpPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTP POST', () async {
-      Response response =
-          await curt.post(Uri.parse('http://$server:$httpPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTP POST', () async {
+        Response response =
+            await curt.post(Uri.parse('http://$server:$httpPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTP PUT', () async {
-      Response response =
-          await curt.put(Uri.parse('http://$server:$httpPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTP PUT', () async {
+        Response response =
+            await curt.put(Uri.parse('http://$server:$httpPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTP DELETE', () async {
-      Response response =
-          await curt.delete(Uri.parse('http://$server:$httpPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTP DELETE', () async {
+        Response response =
+            await curt.delete(Uri.parse('http://$server:$httpPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTPS GET', () async {
-      Response response =
-          await curt.get(Uri.parse('https://$server:$httpsPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTPS GET', () async {
+        Response response =
+            await curt.get(Uri.parse('https://$server:$httpsPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTPS POST', () async {
-      Response response =
-          await curt.post(Uri.parse('https://$server:$httpsPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTPS POST', () async {
+        Response response =
+            await curt.post(Uri.parse('https://$server:$httpsPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTPS PUT', () async {
-      Response response =
-          await curt.put(Uri.parse('https://$server:$httpsPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTPS PUT', () async {
+        Response response =
+            await curt.put(Uri.parse('https://$server:$httpsPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    test('Simple HTTPS DELETE', () async {
-      Response response =
-          await curt.delete(Uri.parse('https://$server:$httpsPort/'));
-      expect(response.statusCode, 200);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
+      ///
+      test('Simple HTTPS DELETE', () async {
+        Response response =
+            await curt.delete(Uri.parse('https://$server:$httpsPort/'));
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+      });
 
-    ///
-    tearDownAll(() async {
-      ProcessResult result = await Process.run('docker', <String>[
-        'stop',
-        containerName,
-      ]).timeout(timeLimit);
+      ///
+      tearDownAll(() async {
+        ProcessResult result = await Process.run('docker', <String>[
+          'stop',
+          containerName,
+        ]).timeout(timeLimit);
 
-      expect(result.exitCode, 0, reason: result.stderr);
-    });
-  });
+        expect(result.exitCode, 0, reason: result.stderr);
+      });
+    },
+    onPlatform: <String, dynamic>{
+      'mac-os': Skip('No docker installed.'),
+    },
+  );
 }

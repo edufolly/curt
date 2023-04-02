@@ -127,7 +127,7 @@ dart_code_metrics:
   metrics-exclude:
     - test/**
   rules:
-    - arguments-ordering
+    # - arguments-ordering
     - avoid-cascade-after-if-null
     - avoid-collection-methods-with-unrelated-types
     - avoid-double-slash-imports
