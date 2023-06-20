@@ -4,14 +4,23 @@ version: 0.0.3
 repository: https://github.com/edufolly/curt
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=2.19.0 <4.0.0'
 
 dependencies:
-  http: ^0.13.5
+  http: any
 
 dev_dependencies:
+  # https://pub.dev/packages/coverage
   coverage: ^1.6.3
-  dart_code_metrics: ^5.7.0
-  lints: ^2.0.0
-  markdown: ^7.0.1
+
+  # https://pub.dev/packages/dart_code_metrics
+  dart_code_metrics: ^5.7.5
+
+  # https://pub.dev/packages/lints
+  lints: ^2.1.0
+
+  # https://pub.dev/packages/markdown
+  markdown: ^7.1.0
+
+  # https://pub.dev/packages/test
   test: ^1.24.0
