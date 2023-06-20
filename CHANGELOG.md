@@ -1,4 +1,4 @@
-## 0.0.3 (2023-04-02)
+## 0.0.3 (2023-06-20)
 
 - Cleaning headers when follow redirect is active.
 - Fixing test matrix.

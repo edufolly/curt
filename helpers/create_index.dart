@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:markdown/markdown.dart';
@@ -11,13 +13,13 @@ void main(List<String> args) {
     exit(10);
   }
 
-  File mdFile = File(args.first);
+  final File mdFile = File(args.first);
 
   if (!mdFile.existsSync()) {
     print('Markdown file not exists.');
   }
 
-  String template = '''
+  const String template = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>

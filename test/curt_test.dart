@@ -49,10 +49,10 @@ void main() {
         expect(result.exitCode, 0, reason: result.stderr);
 
         /// Time to container starts.
-        await Future<void>.delayed(Duration(seconds: 10));
+        await Future<void>.delayed(const Duration(seconds: 10));
       });
 
-      Map<String, BasicTestResult> tests = <String, BasicTestResult>{
+      final Map<String, BasicTestResult> tests = <String, BasicTestResult>{
         '$scheme://$server:$httpPort/status/200': BasicTestResult(
           statusCode: 200,
           headersMatcher: isNotEmpty,
@@ -77,28 +77,28 @@ void main() {
 
       for (final MapEntry<String, BasicTestResult> entry in tests.entries) {
         test('GET ${entry.key}', () async {
-          Response response = await curt.get(Uri.parse(entry.key));
+          final Response response = await curt.get(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('POST ${entry.key}', () async {
-          Response response = await curt.post(Uri.parse(entry.key));
+          final Response response = await curt.post(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('PUT ${entry.key}', () async {
-          Response response = await curt.put(Uri.parse(entry.key));
+          final Response response = await curt.put(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('DELETE ${entry.key}', () async {
-          Response response = await curt.delete(Uri.parse(entry.key));
+          final Response response = await curt.delete(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
@@ -106,9 +106,9 @@ void main() {
       }
 
       for (int gen = 0; gen < 3; gen++) {
-        int bytes = Random().nextInt(1024);
+        final int bytes = Random().nextInt(1024);
         test('Body Length $bytes', () async {
-          Response response = await curt.get(
+          final Response response = await curt.get(
             Uri.parse('$scheme://$server:$httpPort/range/$bytes'),
           );
 
@@ -127,7 +127,7 @@ void main() {
       test('Redirect', () async {
         final Curt curt = Curt(followRedirects: true);
 
-        Uri uri = Uri(
+        final Uri uri = Uri(
           scheme: scheme,
           host: server,
           port: httpPort,
@@ -137,7 +137,7 @@ void main() {
           },
         );
 
-        Response response = await curt.get(uri);
+        final Response response = await curt.get(uri);
 
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -147,7 +147,7 @@ void main() {
 
       ///
       tearDownAll(() async {
-        ProcessResult result = await Process.run('docker', <String>[
+        final ProcessResult result = await Process.run('docker', <String>[
           'stop',
           containerName,
         ]).timeout(timeLimit);
@@ -156,8 +156,8 @@ void main() {
       });
     },
     onPlatform: <String, dynamic>{
-      'mac-os': Skip('No docker installed on GitHub actions.'),
-      'windows': Skip('Need a windows container image.'),
+      'mac-os': const Skip('No docker installed on GitHub actions.'),
+      'windows': const Skip('Need a windows container image.'),
     },
   );
 
@@ -205,7 +205,7 @@ void main() {
 
       ///
       test('Simple HTTP GET', () async {
-        Response response =
+        final Response response =
             await curt.get(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -214,7 +214,7 @@ void main() {
 
       ///
       test('Simple HTTP POST', () async {
-        Response response =
+        final Response response =
             await curt.post(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -223,7 +223,7 @@ void main() {
 
       ///
       test('Simple HTTP PUT', () async {
-        Response response =
+        final Response response =
             await curt.put(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -232,7 +232,7 @@ void main() {
 
       ///
       test('Simple HTTP DELETE', () async {
-        Response response =
+        final Response response =
             await curt.delete(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -241,7 +241,7 @@ void main() {
 
       ///
       test('Simple HTTPS GET', () async {
-        Response response =
+        final Response response =
             await curt.get(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -250,7 +250,7 @@ void main() {
 
       ///
       test('Simple HTTPS POST', () async {
-        Response response =
+        final Response response =
             await curt.post(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -259,7 +259,7 @@ void main() {
 
       ///
       test('Simple HTTPS PUT', () async {
-        Response response =
+        final Response response =
             await curt.put(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -268,7 +268,7 @@ void main() {
 
       ///
       test('Simple HTTPS DELETE', () async {
-        Response response =
+        final Response response =
             await curt.delete(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -277,7 +277,7 @@ void main() {
 
       ///
       tearDownAll(() async {
-        ProcessResult result = await Process.run('docker', <String>[
+        final ProcessResult result = await Process.run('docker', <String>[
           'stop',
           containerName,
         ]).timeout(timeLimit);
@@ -286,8 +286,8 @@ void main() {
       });
     },
     onPlatform: <String, dynamic>{
-      'mac-os': Skip('No docker installed on GitHub actions.'),
-      'windows': Skip('Need a windows container image.'),
+      'mac-os': const Skip('No docker installed on GitHub actions.'),
+      'windows': const Skip('Need a windows container image.'),
     },
   );
 }

@@ -5,14 +5,14 @@ import 'dart:io';
 ///
 ///
 void main() {
-  Map<String, String> curt = <String, String>{
+  final Map<String, String> curt = <String, String>{
     'name': 'curt',
     'rootUri': '../',
     'packageUri': 'lib/',
     'languageVersion': '2.19',
   };
 
-  Map<String, dynamic> package = <String, dynamic>{
+  final Map<String, dynamic> package = <String, dynamic>{
     'configVersion': 2,
     'packages': <Map<String, String>>[curt],
     'generated': DateTime.now().toIso8601String(),
