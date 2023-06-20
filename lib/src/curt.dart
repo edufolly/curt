@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -13,7 +15,6 @@ class Curt {
   final bool silent;
   final bool followRedirects;
   final int timeout;
-  final String? userAgent;
 
   ///
   ///
@@ -25,7 +26,6 @@ class Curt {
     this.silent = true,
     this.followRedirects = false,
     this.timeout = 10000,
-    this.userAgent,
   });
 
   ///
@@ -37,7 +37,7 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     String? data,
   }) async {
-    List<String> args = <String>['-v', '-X', method];
+    final List<String> args = <String>['-v', '-X', method];
 
     /// Insecure
     if (insecure) {
@@ -52,13 +52,6 @@ class Curt {
     /// Follow Redirects
     if (followRedirects) {
       args.add('-L');
-    }
-
-    /// User Agent
-    if (userAgent != null && userAgent!.isNotEmpty) {
-      args
-        ..add('-A')
-        ..add(userAgent!);
     }
 
     /// Headers
@@ -85,7 +78,7 @@ class Curt {
     ///
     /// Run
     ///
-    ProcessResult run = await Process.run(executable, args).timeout(
+    final ProcessResult run = await Process.run(executable, args).timeout(
       Duration(
         milliseconds: timeout,
       ),
@@ -103,14 +96,15 @@ class Curt {
     ///
     /// Parse
     ///
-    List<String> verboseLines = run.stderr.toString().split('\n');
+    final List<String> verboseLines = run.stderr.toString().split('\n');
 
-    RegExp headerRegExp = RegExp('(?<key>.*?): (?<value>.*)');
+    final RegExp headerRegExp = RegExp('(?<key>.*?): (?<value>.*)');
 
-    RegExp protocolRegExp = RegExp(r'HTTP(.*?) (?<statusCode>\d*)');
+    final RegExp protocolRegExp = RegExp(r'HTTP(.*?) (?<statusCode>\d*)');
 
     int statusCode = -1;
-    Map<String, String> responseHeaders = <String, String>{};
+
+    final Map<String, String> responseHeaders = <String, String>{};
 
     for (final String verboseLine in verboseLines) {
       if (debug) {
@@ -122,7 +116,7 @@ class Curt {
       }
 
       if (verboseLine.substring(0, 1) == '<') {
-        String line = verboseLine.substring(2);
+        final String line = verboseLine.substring(2);
 
         RegExpMatch? match = headerRegExp.firstMatch(line);
         if (match != null) {
@@ -135,6 +129,7 @@ class Curt {
         if (match != null) {
           statusCode =
               int.tryParse(match.namedGroup('statusCode').toString()) ?? -1;
+          responseHeaders.clear();
         }
       }
     }
@@ -155,7 +150,7 @@ class Curt {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
   }) {
-    Map<String, String> newHeaders = Map<String, String>.of(headers);
+    final Map<String, String> newHeaders = Map<String, String>.of(headers);
     newHeaders['Content-Type'] = 'application/json';
 
     return send(

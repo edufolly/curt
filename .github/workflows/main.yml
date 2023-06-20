@@ -72,11 +72,14 @@ jobs:
       - name: Creating Test Coverage HTML
         run: |
           genhtml coverage/lcov.info \
-            --output-directory coverage/html \
+            --output-directory coverage/html/coverage \
             --title "curt" \
             --show-details
 
-      - name: Publish Dart package
+      - name: Creating package filter.
+        run: dart run helpers/create_index.dart README.md coverage/html/index.html
+
+      - name: Publish Dart Package
         uses: k-paxian/dart-package-publisher@master
         with:
           accessToken: ${{ secrets.OAUTH_ACCESS_TOKEN }}
