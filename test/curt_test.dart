@@ -1,10 +1,8 @@
-// ignore_for_file: format-comment
-
 import 'dart:io';
 import 'dart:math';
 
 import 'package:curt/src/curt.dart';
-import 'package:http/http.dart';
+import 'package:curt/src/curt_response.dart';
 import 'package:test/test.dart';
 
 import '../helpers/basic_test_result.dart';
@@ -77,28 +75,28 @@ void main() {
 
       for (final MapEntry<String, BasicTestResult> entry in tests.entries) {
         test('GET ${entry.key}', () async {
-          final Response response = await curt.get(Uri.parse(entry.key));
+          final CurtResponse response = await curt.get(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('POST ${entry.key}', () async {
-          final Response response = await curt.post(Uri.parse(entry.key));
+          final CurtResponse response = await curt.post(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('PUT ${entry.key}', () async {
-          final Response response = await curt.put(Uri.parse(entry.key));
+          final CurtResponse response = await curt.put(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
         });
 
         test('DELETE ${entry.key}', () async {
-          final Response response = await curt.delete(Uri.parse(entry.key));
+          final CurtResponse response = await curt.delete(Uri.parse(entry.key));
           expect(response.statusCode, entry.value.statusCode);
           expect(response.headers, entry.value.headersMatcher);
           expect(response.body, entry.value.bodyMatcher);
@@ -108,17 +106,13 @@ void main() {
       for (int gen = 0; gen < 3; gen++) {
         final int bytes = Random().nextInt(1024);
         test('Body Length $bytes', () async {
-          final Response response = await curt.get(
+          final CurtResponse response = await curt.get(
             Uri.parse('$scheme://$server:$httpPort/range/$bytes'),
           );
 
           expect(response.statusCode, 200);
           expect(response.headers, isNotEmpty);
-          expect(response.headers.containsKey('Content-Length'), isTrue);
-          expect(
-            int.tryParse(response.headers['Content-Length'].toString()) ?? -1,
-            bytes,
-          );
+          expect(response.headers.contentLength, bytes);
           expect(response.body, isNotEmpty);
           expect(response.body.length, bytes);
         });
@@ -137,11 +131,11 @@ void main() {
           },
         );
 
-        final Response response = await curt.get(uri);
+        final CurtResponse response = await curt.get(uri);
 
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
-        expect(response.headers.containsKey('location'), isFalse);
+        expect(response.headers.value(HttpHeaders.locationHeader), isNull);
         expect(response.body, isEmpty);
       });
 
@@ -205,7 +199,7 @@ void main() {
 
       ///
       test('Simple HTTP GET', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.get(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -214,7 +208,7 @@ void main() {
 
       ///
       test('Simple HTTP POST', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.post(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -223,7 +217,7 @@ void main() {
 
       ///
       test('Simple HTTP PUT', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.put(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -232,7 +226,7 @@ void main() {
 
       ///
       test('Simple HTTP DELETE', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.delete(Uri.parse('http://$server:$httpPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -241,7 +235,7 @@ void main() {
 
       ///
       test('Simple HTTPS GET', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.get(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -250,7 +244,7 @@ void main() {
 
       ///
       test('Simple HTTPS POST', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.post(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -259,7 +253,7 @@ void main() {
 
       ///
       test('Simple HTTPS PUT', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.put(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
@@ -268,7 +262,7 @@ void main() {
 
       ///
       test('Simple HTTPS DELETE', () async {
-        final Response response =
+        final CurtResponse response =
             await curt.delete(Uri.parse('https://$server:$httpsPort/'));
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
