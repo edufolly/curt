@@ -3,9 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:curt/src/http_headers.dart';
-import 'package:curt/src/response.dart';
-import 'package:http/http.dart';
+import 'package:curt/src/curt_http_headers.dart';
+import 'package:curt/src/curt_response.dart';
 
 ///
 ///
