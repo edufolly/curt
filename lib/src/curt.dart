@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:curt/src/http_headers.dart';
+import 'package:curt/src/response.dart';
 import 'package:http/http.dart';
 
 ///
@@ -31,10 +33,11 @@ class Curt {
   ///
   ///
   ///
-  Future<Response> send(
+  Future<CurtResponse> send(
     Uri uri, {
     required String method,
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) async {
     final List<String> args = <String>['-v', '-X', method];
@@ -59,6 +62,13 @@ class Curt {
       args
         ..add('-H')
         ..add('${header.key}: ${header.value}');
+    }
+
+    /// Cookies
+    for (final Cookie cookie in cookies) {
+      args
+        ..add('--cookie')
+        ..add('${cookie.name}=${cookie.value}');
     }
 
     /// Body data
@@ -104,7 +114,7 @@ class Curt {
 
     int statusCode = -1;
 
-    final Map<String, String> responseHeaders = <String, String>{};
+    final CurtHttpHeaders responseHeaders = CurtHttpHeaders();
 
     for (final String verboseLine in verboseLines) {
       if (debug) {
@@ -120,8 +130,10 @@ class Curt {
 
         RegExpMatch? match = headerRegExp.firstMatch(line);
         if (match != null) {
-          responseHeaders[match.namedGroup('key').toString()] =
-              match.namedGroup('value').toString();
+          responseHeaders.add(
+            match.namedGroup('key').toString(),
+            match.namedGroup('value').toString(),
+          );
           continue;
         }
 
@@ -134,7 +146,7 @@ class Curt {
       }
     }
 
-    return Response(
+    return CurtResponse(
       run.stdout.toString(),
       statusCode,
       headers: responseHeaders,
@@ -144,19 +156,22 @@ class Curt {
   ///
   ///
   ///
-  Future<Response> sendJson(
+  Future<CurtResponse> sendJson(
     Uri uri, {
     required String method,
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
+    String contentType = 'application/json',
   }) {
     final Map<String, String> newHeaders = Map<String, String>.of(headers);
-    newHeaders['Content-Type'] = 'application/json';
+    newHeaders['Content-Type'] = contentType;
 
     return send(
       uri,
       method: method,
       headers: newHeaders,
+      cookies: cookies,
       data: json.encode(body),
     );
   }
@@ -164,58 +179,80 @@ class Curt {
   ///
   ///
   ///
-  Future<Response> get(
+  Future<CurtResponse> get(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
   }) =>
-      send(uri, method: 'GET', headers: headers);
+      send(uri, method: 'GET', headers: headers, cookies: cookies);
 
   ///
   ///
   ///
-  Future<Response> post(
+  Future<CurtResponse> post(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) =>
-      send(uri, method: 'POST', headers: headers, data: data);
+      send(uri, method: 'POST', headers: headers, data: data, cookies: cookies);
 
   ///
   ///
   ///
-  Future<Response> postJson(
+  Future<CurtResponse> postJson(
     Uri uri, {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
+    String contentType = 'application/json',
   }) =>
-      sendJson(uri, method: 'POST', headers: headers, body: body);
+      sendJson(
+        uri,
+        method: 'POST',
+        headers: headers,
+        body: body,
+        cookies: cookies,
+        contentType: contentType,
+      );
 
   ///
   ///
   ///
-  Future<Response> put(
+  Future<CurtResponse> put(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) =>
-      send(uri, method: 'PUT', headers: headers, data: data);
+      send(uri, method: 'PUT', headers: headers, data: data, cookies: cookies);
 
   ///
   ///
   ///
-  Future<Response> putJson(
+  Future<CurtResponse> putJson(
     Uri uri, {
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
+    String contentType = 'application/json',
   }) =>
-      sendJson(uri, method: 'PUT', headers: headers, body: body);
+      sendJson(
+        uri,
+        method: 'PUT',
+        headers: headers,
+        body: body,
+        cookies: cookies,
+        contentType: contentType,
+      );
 
   ///
   ///
   ///
-  Future<Response> delete(
+  Future<CurtResponse> delete(
     Uri uri, {
     Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
   }) =>
-      send(uri, method: 'DELETE', headers: headers);
+      send(uri, method: 'DELETE', headers: headers, cookies: cookies);
 }
