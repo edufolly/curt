@@ -1,3 +1,10 @@
+## 0.1.0 (2023-06-21)
+
+- Adding CurtHttpHeaders class.
+- Adding CurtResponse class.
+- Updating tests.
+- Thanks [GThurler](https://github.com/GThurler) for the improvements.
+
 ## 0.0.3 (2023-06-20)
 
 - Cleaning headers when follow redirect is active.

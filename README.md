@@ -10,7 +10,7 @@ Simple wrapper for curl in dart.
 
 ## Motivation
 
-Allow https connections with TLS lower than 1.2.
+Allow https connections with TLS less than 1.2 through curl.
 
 ## Funding
 
