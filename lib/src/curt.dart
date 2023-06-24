@@ -48,7 +48,11 @@ class Curt {
         ..writeln('system_default = system_default_sect')
         ..writeln('[system_default_sect]')
         ..writeln('CipherString = DEFAULT@SECLEVEL=1');
-      File(opensslConfigOverridePath).writeAsStringSync(buffer.toString());
+
+      File(opensslConfigOverridePath)
+        ..createSync(recursive: true)
+        ..writeAsStringSync(buffer.toString());
+
       environment['OPENSSL_CONF'] = opensslConfigOverridePath;
     }
   }
