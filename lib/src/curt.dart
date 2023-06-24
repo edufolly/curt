@@ -10,11 +10,15 @@ import 'package:curt/src/curt_response.dart';
 ///
 ///
 class Curt {
+  static const String opensslConfigOverridePath = '/tmp/curt-openssl.cnf';
+
+  final Map<String, String> environment = <String, String>{};
   final String executable;
   final bool debug;
   final bool insecure;
   final bool silent;
   final bool followRedirects;
+  final bool linuxOpensslTLSOverride;
   final int timeout;
 
   ///
@@ -26,8 +30,32 @@ class Curt {
     this.insecure = false,
     this.silent = true,
     this.followRedirects = false,
+    this.linuxOpensslTLSOverride = false,
     this.timeout = 10000,
-  });
+  }) {
+    /// https://askubuntu.com/questions/1250787/when-i-try-to-curl-a-website-i-get-ssl-error
+    /// This openssl problem can happen on any distro with curl linking
+    /// dynamically to openssl, even though the link is specific to ubuntu.
+    /// The workaround here is to create a config override for openssl, and run
+    /// curl with that config override - this will allow TLS v1.0 and v1.1
+    /// requests to work, which are blocked by openssl, NOT curl
+    if (Platform.isLinux && linuxOpensslTLSOverride) {
+      final StringBuffer buffer = StringBuffer()
+        ..writeln('openssl_conf = openssl_init')
+        ..writeln('[openssl_init]')
+        ..writeln('ssl_conf = ssl_sect')
+        ..writeln('[ssl_sect]')
+        ..writeln('system_default = system_default_sect')
+        ..writeln('[system_default_sect]')
+        ..writeln('CipherString = DEFAULT@SECLEVEL=1');
+
+      File(opensslConfigOverridePath)
+        ..createSync(recursive: true)
+        ..writeAsStringSync(buffer.toString());
+
+      environment['OPENSSL_CONF'] = opensslConfigOverridePath;
+    }
+  }
 
   ///
   ///
@@ -87,7 +115,11 @@ class Curt {
     ///
     /// Run
     ///
-    final ProcessResult run = await Process.run(executable, args).timeout(
+    final ProcessResult run = await Process.run(
+      executable,
+      args,
+      environment: environment,
+    ).timeout(
       Duration(
         milliseconds: timeout,
       ),
