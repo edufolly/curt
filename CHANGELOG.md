@@ -1,3 +1,8 @@
+## 0.1.2 (2023-06-29)
+
+- Removing http package dependency.
+- Adding testainer package.
+
 ## 0.1.1 (2023-06-24)
 
 - Creating openssl config for Linux.

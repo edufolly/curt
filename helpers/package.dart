@@ -9,7 +9,7 @@ void main() {
     'name': 'curt',
     'rootUri': '../',
     'packageUri': 'lib/',
-    'languageVersion': '2.19',
+    'languageVersion': '3.0',
   };
 
   final Map<String, dynamic> package = <String, dynamic>{
@@ -17,7 +17,7 @@ void main() {
     'packages': <Map<String, String>>[curt],
     'generated': DateTime.now().toIso8601String(),
     'generator': 'pub',
-    'generatorVersion': '2.19.0',
+    'generatorVersion': '3.0.0',
   };
 
   File('coverage/package.json')

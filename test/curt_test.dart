@@ -330,7 +330,7 @@ void main() {
       tearDownAll(container.stop);
     },
     onPlatform: <String, dynamic>{
-      // 'mac-os': const Skip('No docker installed on GitHub actions.'),
+      'mac-os': const Skip('No docker installed on GitHub actions.'),
       'windows': const Skip('Need a windows container image.'),
     },
   );
