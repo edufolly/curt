@@ -9,6 +9,18 @@ import 'package:testainers/testainers.dart';
 ///
 ///
 void main() {
+  group('Simple Tests', () {
+    final Curt curt = Curt();
+    test('GET https://google.com', () async {
+      final CurtResponse response = await curt.get(
+        Uri.parse('https://google.com'),
+      );
+      expect(response.statusCode, 301);
+      expect(response.headers, isNotEmpty);
+      expect(response.body, isNotEmpty);
+    });
+  });
+
   ///
   group(
     'Basic Tests',
@@ -17,7 +29,6 @@ void main() {
 
       final TestainersHttpBin container = TestainersHttpBin();
 
-      const String scheme = 'http';
       const String server = '127.0.0.1';
 
       ///
@@ -25,148 +36,148 @@ void main() {
         await container.start();
       });
 
-      test('GET $scheme://$server:${container.httpPort}/status/200', () async {
+      test('GET HTTP 200', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/200'),
+          Uri.parse('http://$server:${container.httpPort}/status/200'),
         );
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('GET $scheme://$server:${container.httpPort}/status/403', () async {
+      test('GET HTTP 403', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/403'),
+          Uri.parse('http://$server:${container.httpPort}/status/403'),
         );
         expect(response.statusCode, 403);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('GET $scheme://$server:${container.httpPort}/status/404', () async {
+      test('GET HTTP 404', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/404'),
+          Uri.parse('http://$server:${container.httpPort}/status/404'),
         );
         expect(response.statusCode, 404);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('GET $scheme://$server:${container.httpPort}/status/500', () async {
+      test('GET HTTP 500', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/500'),
+          Uri.parse('http://$server:${container.httpPort}/status/500'),
         );
         expect(response.statusCode, 500);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('POST $scheme://$server:${container.httpPort}/status/200', () async {
+      test('POST HTTP 200', () async {
         final CurtResponse response = await curt.post(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/200'),
+          Uri.parse('http://$server:${container.httpPort}/status/200'),
         );
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('POST $scheme://$server:${container.httpPort}/status/403', () async {
+      test('POST HTTP 403', () async {
         final CurtResponse response = await curt.post(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/403'),
+          Uri.parse('http://$server:${container.httpPort}/status/403'),
         );
         expect(response.statusCode, 403);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('POST $scheme://$server:${container.httpPort}/status/404', () async {
+      test('POST HTTP 404', () async {
         final CurtResponse response = await curt.post(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/404'),
+          Uri.parse('http://$server:${container.httpPort}/status/404'),
         );
         expect(response.statusCode, 404);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('POST $scheme://$server:${container.httpPort}/status/500', () async {
+      test('POST HTTP 500', () async {
         final CurtResponse response = await curt.post(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/500'),
+          Uri.parse('http://$server:${container.httpPort}/status/500'),
         );
         expect(response.statusCode, 500);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('PUT $scheme://$server:${container.httpPort}/status/200', () async {
+      test('PUT HTTP 200', () async {
         final CurtResponse response = await curt.put(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/200'),
+          Uri.parse('http://$server:${container.httpPort}/status/200'),
         );
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('PUT $scheme://$server:${container.httpPort}/status/403', () async {
+      test('PUT HTTP 403', () async {
         final CurtResponse response = await curt.put(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/403'),
+          Uri.parse('http://$server:${container.httpPort}/status/403'),
         );
         expect(response.statusCode, 403);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('PUT $scheme://$server:${container.httpPort}/status/404', () async {
+      test('PUT HTTP 404', () async {
         final CurtResponse response = await curt.put(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/404'),
+          Uri.parse('http://$server:${container.httpPort}/status/404'),
         );
         expect(response.statusCode, 404);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('PUT $scheme://$server:${container.httpPort}/status/500', () async {
+      test('PUT HTTP 500', () async {
         final CurtResponse response = await curt.put(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/500'),
+          Uri.parse('http://$server:${container.httpPort}/status/500'),
         );
         expect(response.statusCode, 500);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('DELETE $scheme://$server:${container.httpPort}/status/200',
+      test('DELETE HTTP 200',
           () async {
         final CurtResponse response = await curt.delete(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/200'),
+          Uri.parse('http://$server:${container.httpPort}/status/200'),
         );
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('DELETE $scheme://$server:${container.httpPort}/status/403',
+      test('DELETE HTTP 403',
           () async {
         final CurtResponse response = await curt.delete(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/403'),
+          Uri.parse('http://$server:${container.httpPort}/status/403'),
         );
         expect(response.statusCode, 403);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('DELETE $scheme://$server:${container.httpPort}/status/404',
+      test('DELETE HTTP 404',
           () async {
         final CurtResponse response = await curt.delete(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/404'),
+          Uri.parse('http://$server:${container.httpPort}/status/404'),
         );
         expect(response.statusCode, 404);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
       });
 
-      test('DELETE $scheme://$server:${container.httpPort}/status/500',
+      test('DELETE HTTP 500',
           () async {
         final CurtResponse response = await curt.delete(
-          Uri.parse('$scheme://$server:${container.httpPort}/status/500'),
+          Uri.parse('http://$server:${container.httpPort}/status/500'),
         );
         expect(response.statusCode, 500);
         expect(response.headers, isNotEmpty);
@@ -175,7 +186,7 @@ void main() {
 
       test('Body Length 123', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/range/123'),
+          Uri.parse('http://$server:${container.httpPort}/range/123'),
         );
 
         expect(response.statusCode, 200);
@@ -187,7 +198,7 @@ void main() {
 
       test('Body Length 321', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/range/321'),
+          Uri.parse('http://$server:${container.httpPort}/range/321'),
         );
 
         expect(response.statusCode, 200);
@@ -199,7 +210,7 @@ void main() {
 
       test('Body Length 999', () async {
         final CurtResponse response = await curt.get(
-          Uri.parse('$scheme://$server:${container.httpPort}/range/999'),
+          Uri.parse('http://$server:${container.httpPort}/range/999'),
         );
 
         expect(response.statusCode, 200);
@@ -213,12 +224,12 @@ void main() {
         final Curt curt = Curt(followRedirects: true);
 
         final Uri uri = Uri(
-          scheme: scheme,
+          scheme: 'http',
           host: server,
           port: container.httpPort,
           path: 'redirect-to',
           queryParameters: <String, dynamic>{
-            'url': '$scheme://$server:${container.httpPort}/status/200',
+            'url': 'http://$server:${container.httpPort}/status/200',
           },
         );
 
@@ -234,7 +245,7 @@ void main() {
       tearDownAll(container.stop);
     },
     onPlatform: <String, dynamic>{
-      'mac-os': const Skip('No docker installed on GitHub actions.'),
+      // 'mac-os': const Skip('No docker installed on GitHub actions.'),
       'windows': const Skip('Need a windows container image.'),
     },
   );
@@ -330,7 +341,7 @@ void main() {
       tearDownAll(container.stop);
     },
     onPlatform: <String, dynamic>{
-      'mac-os': const Skip('No docker installed on GitHub actions.'),
+      // 'mac-os': const Skip('No docker installed on GitHub actions.'),
       'windows': const Skip('Need a windows container image.'),
     },
   );
