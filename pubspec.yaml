@@ -1,5 +1,5 @@
 name: curt
-description: Simple wrapper for curl in dart.
+description: A convenient package that allows developers to interact with the curl command within elegance of the Dart programming language.
 version: 0.1.2
 repository: https://github.com/edufolly/curt
 

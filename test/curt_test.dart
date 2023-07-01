@@ -29,7 +29,7 @@ void main() {
 
       final TestainersHttpBin container = TestainersHttpBin();
 
-      const String server = '127.0.0.1';
+      const String server = 'localhost';
 
       ///
       setUpAll(() async {
@@ -258,7 +258,7 @@ void main() {
 
       final TestainersHttpHttpsEcho container = TestainersHttpHttpsEcho();
 
-      const String server = '127.0.0.1';
+      const String server = 'localhost';
 
       ///
       setUpAll(() async {
