@@ -1,7 +1,7 @@
 # curt
 
 [![Build With Love](https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg)](https://github.com/edufolly/curt/stargazers)
-[![Pub Package](https://img.shields.io/pub/v/curt?include_prereleases.svg)](https://pub.dev/packages/curt)
+[![Pub Package](https://img.shields.io/pub/v/curt?color=orange)](https://pub.dev/packages/curt)
 [![Licence](https://img.shields.io/github/license/edufolly/curt?color=blue)](https://github.com/edufolly/curt/blob/main/LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main)](https://github.com/edufolly/curt/releases/latest)
 [![Coverage Report](https://img.shields.io/badge/coverage-report-C08EA1)](https://edufolly.github.io/curt/coverage/)
