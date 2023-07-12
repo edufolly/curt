@@ -1,10 +1,10 @@
 # curt
 
-[![BuildWithLove](https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg "build with love")](https://github.com/edufolly/curt/stargazers)
-[![pub package](https://img.shields.io/pub/v/curt?include_prereleases.svg "curt")](https://pub.dev/packages/curt)
-[![curt](https://img.shields.io/github/license/edufolly/curt "licence")](https://github.com/edufolly/curt)
-[![curt](https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main "build")](https://github.com/edufolly/curt)
-[![CoverageReport](https://img.shields.io/badge/coverage-report-blue "coverage report")](https://edufolly.github.io/curt/coverage/)
+[![Build With Love](https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg)](https://github.com/edufolly/curt/stargazers)
+[![Pub Package](https://img.shields.io/pub/v/curt?include_prereleases.svg)](https://pub.dev/packages/curt)
+[![Licence](https://img.shields.io/github/license/edufolly/curt?color=blue)](https://github.com/edufolly/curt/blob/main/LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main)](https://github.com/edufolly/curt/releases/latest)
+[![Coverage Report](https://img.shields.io/badge/coverage-report-C08EA1)](https://edufolly.github.io/curt/coverage/)
 
 A convenient package that allows developers to interact with the curl command
 within elegance of the Dart programming language.
