@@ -33,9 +33,7 @@ void main() {
 
       final Curt followRedirects = Curt(followRedirects: true);
 
-      final TestainersHttpbucket container = TestainersHttpbucket(
-        tag: 'latest',
-      );
+      final TestainersHttpbucket container = TestainersHttpbucket();
 
       const Map<String, String> headers = <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
