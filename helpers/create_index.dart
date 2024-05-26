@@ -17,6 +17,7 @@ void main(List<String> args) {
 
   if (!mdFile.existsSync()) {
     print('Markdown file not exists.');
+    exit(20);
   }
 
   const String template = '''
