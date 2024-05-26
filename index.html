@@ -13,18 +13,62 @@
   <div class="col-lg-8 mx-auto p-4 py-md-5">
     <main>
 <h1 id="curt">curt</h1>
-<p>Simple wrapper for curl in dart.</p>
-<p><a href="https://github.com/edufolly/curt/stargazers"><img src="https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg" alt="BuildWithLove" title="build with love" /></a>
-<a href="https://pub.dev/packages/curt"><img src="https://img.shields.io/pub/v/curt?include_prereleases.svg" alt="pub package" title="curt" /></a>
-<a href="https://github.com/edufolly/curt"><img src="https://img.shields.io/github/license/edufolly/curt" alt="curt" title="licence" /></a>
-<a href="https://github.com/edufolly/curt"><img src="https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main" alt="curt" title="build" /></a>
-<a href="https://edufolly.github.io/curt/coverage/"><img src="https://img.shields.io/badge/coverage-report-blue" alt="CoverageReport" title="coverage report" /></a></p>
-<h2 id="motivation">Motivation</h2>
-<p>Allow https connections with TLS less than 1.2 through curl.</p>
+<p><a href="https://github.com/edufolly/curt/stargazers"><img src="https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg" alt="Build With Love" /></a>
+<a href="https://pub.dev/packages/curt"><img src="https://img.shields.io/pub/v/curt?color=orange" alt="Pub Package" /></a>
+<a href="https://github.com/edufolly/curt/blob/main/LICENSE"><img src="https://img.shields.io/github/license/edufolly/curt?color=blue" alt="Licence" /></a>
+<a href="https://github.com/edufolly/curt/releases/latest"><img src="https://img.shields.io/github/actions/workflow/status/edufolly/curt/main.yml?branch=main" alt="Build" /></a>
+<a href="https://edufolly.github.io/curt/coverage/"><img src="https://img.shields.io/badge/coverage-report-C08EA1" alt="Coverage Report" /></a></p>
+<p>A convenient package that allows developers to interact with the curl command
+within elegance of the Dart programming language.</p>
+<p>This wrapper simplifies the process of sending HTTP requests, handling
+responses, and managing data transfers, providing a more intuitive and efficient
+way to work with curl functionality in the Dart ecosystem. By encapsulating the
+complexity of curl within a straightforward wrapper, developers can leverage its
+power and flexibility while benefiting from the simplicity and elegance of the
+Dart programming language.</p>
 <h2 id="funding">Funding</h2>
+<p>Your contribution will help drive the development of quality tools for the
+Flutter and Dart developer community. Any amount will be appreciated. Thank you
+for your continued support!</p>
 <p><a href="https://www.buymeacoffee.com/edufolly"><img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg" alt="BuyMeACoffee" /></a></p>
-<h3 id="code-example">Code Example</h3>
-<p><a href="https://github.com/edufolly/curt/blob/main/example/curt_example.dart">https://github.com/edufolly/curt/blob/main/example/curt_example.dart</a></p>
+<h2 id="pix">PIX</h2>
+<p>Sua contribuição ajudará a impulsionar o desenvolvimento de ferramentas de
+qualidade para a comunidade de desenvolvedores Flutter e Dart. Qualquer quantia
+será apreciada. Obrigado pelo seu apoio contínuo!</p>
+<p><a href="https://nubank.com.br/pagar/2bt2q/RBr4Szfuwr"><img src="helpers/pix.png" alt="PIX" /></a></p>
+<h2 id="motivation">Motivation</h2>
+<p>Allow https connections with TLS less than 1.2 through <a href="https://curl.se/">curl</a>.</p>
+<p>Legacy systems or older applications that rely on older TLS versions for
+compatibility reasons. These systems might not have been upgraded to support TLS
+1.2 or higher due to various constraints, such as limited resources, technical
+limitations, or compatibility issues with certain dependencies. In such cases,
+allowing HTTPS connections with TLS versions less than 1.2 through curl would
+enable these systems to continue functioning without major modifications.</p>
+<p>Certain devices or environments might enforce outdated TLS configurations due to
+specific security policies or restrictions. These networks may still rely on
+older TLS versions for various reasons, such as interoperability with legacy
+systems or compliance with specific regulations. Allowing curl to establish
+HTTPS connections with TLS versions less than 1.2 would ensure compatibility and
+connectivity in these constrained environments.</p>
+<p>However, it's important to note that TLS versions prior to 1.2 (such as TLS 1.0
+and TLS 1.1) are considered less secure and potentially vulnerable to various
+security threats. TLS 1.2 introduced significant improvements in terms of
+security, encryption algorithms, and cryptographic protocols. Therefore, it's
+generally recommended to use TLS 1.2 or higher for secure communications.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-dart">import 'package:curt/curt.dart';
+
+///
+/// 
+/// 
+void main() async {
+  final Curt curt = Curt();
+  final CurtResponse response = await curt.get(Uri.parse('https://google.com'));
+  print('Status Code: ${response.statusCode}');
+  print('Headers: ${response.headers}');
+  print('Body:\n${response.body}');
+}
+</code></pre>
 
     </main>
   </div>
