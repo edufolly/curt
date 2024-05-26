@@ -1,3 +1,7 @@
+## 0.2.0 (2024-05-26)
+
+- Updating dependencies.
+
 ## 0.1.2 (2023-06-29)
 
 - Removing http package dependency.
