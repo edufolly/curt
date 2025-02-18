@@ -11,16 +11,17 @@ dependencies:
 
 dev_dependencies:
   # https://pub.dev/packages/coverage
-  coverage: ^1.8.0
+  coverage: ^1.11.1
 
   # https://pub.dev/packages/lints
-  lints: ^4.0.0
+  lints: ^5.1.1
 
   # https://pub.dev/packages/markdown
-  markdown: ^7.2.2
+  markdown: ^7.3.0
 
   # https://pub.dev/packages/test
-  test: ^1.25.5
+  test: ^1.25.15
 
   # https://pub.dev/packages/testainers
-  testainers: ^0.1.1
+  # testainers: ^0.1.1
+  testainers: ^0.2.0

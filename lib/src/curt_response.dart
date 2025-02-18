@@ -18,4 +18,8 @@ class CurtResponse {
     this.statusCode, {
     required this.headers,
   }) : cookies = headers.cookies;
+
+  CurtResponse.onError({this.body = '', this.statusCode = 500})
+      : headers = CurtHttpHeaders(),
+        cookies = <Cookie>[];
 }
