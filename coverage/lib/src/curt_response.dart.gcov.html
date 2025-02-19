@@ -10,88 +10,95 @@
 
 <body>
 
-  <table width="100%" border=0 cellspacing=0 cellpadding=0>
-    <tr><td class="title">LCOV - code coverage report</td></tr>
-    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
 
-    <tr>
-      <td width="100%">
-        <table cellpadding=1 border=0 width="100%">
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">lib/src</a> - curt_response.dart<span style="font-size: 80%;"> (source / <a href="curt_response.dart.func-sort-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">lib/src</a> - curt_response.dart<span style="font-size: 80%;"> (source / <a href="curt_response.dart.func-c.html">functions</a>)</span></td>
             <td width="5%"></td>
-            <td width="15%"></td>
-            <td width="10%" class="headerCovTableHead">Hit</td>
-            <td width="10%" class="headerCovTableHead">Total</td>
-            <td width="15%" class="headerCovTableHead">Coverage</td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
             <td class="headerValue">curt</td>
             <td></td>
             <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">40.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
-            <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-05-26 14:46:03</td>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2025-02-19 14:03:45</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
           </tr>
-          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
-        </table>
-      </td>
-    </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
 
-    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
-  </table>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
 
-  <table cellpadding=0 cellspacing=0 border=0>
-    <tr>
-      <td><br></td>
-    </tr>
-    <tr>
-      <td>
-<pre class="sourceHeading">          Line data    Source code</pre>
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : import 'dart:io';</a>
-<a name="2"><span class="lineNum">       2 </span>            : import 'package:curt/src/curt_http_headers.dart';</a>
-<a name="3"><span class="lineNum">       3 </span>            : </a>
-<a name="4"><span class="lineNum">       4 </span>            : ///</a>
-<a name="5"><span class="lineNum">       5 </span>            : ///</a>
-<a name="6"><span class="lineNum">       6 </span>            : ///</a>
-<a name="7"><span class="lineNum">       7 </span>            : class CurtResponse {</a>
-<a name="8"><span class="lineNum">       8 </span>            :   final String body;</a>
-<a name="9"><span class="lineNum">       9 </span>            :   final int statusCode;</a>
-<a name="10"><span class="lineNum">      10 </span>            :   final CurtHttpHeaders headers;</a>
-<a name="11"><span class="lineNum">      11 </span>            :   final List&lt;Cookie&gt; cookies;</a>
-<a name="12"><span class="lineNum">      12 </span>            : </a>
-<a name="13"><span class="lineNum">      13 </span>            :   ///</a>
-<a name="14"><span class="lineNum">      14 </span>            :   ///</a>
-<a name="15"><span class="lineNum">      15 </span>            :   ///</a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">          1 :   CurtResponse(</span></a>
-<a name="17"><span class="lineNum">      17 </span>            :     this.body,</a>
-<a name="18"><span class="lineNum">      18 </span>            :     this.statusCode, {</a>
-<a name="19"><span class="lineNum">      19 </span>            :     required this.headers,</a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">          1 :   }) : cookies = headers.cookies;</span></a>
-<a name="21"><span class="lineNum">      21 </span>            : }</a>
-</pre>
-      </td>
-    </tr>
-  </table>
-  <br>
+<span id="L1"><span class="lineNum">       1</span>              : import 'dart:io';</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:curt/src/curt_http_headers.dart';</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : ///</span>
+<span id="L5"><span class="lineNum">       5</span>              : ///</span>
+<span id="L6"><span class="lineNum">       6</span>              : ///</span>
+<span id="L7"><span class="lineNum">       7</span>              : class CurtResponse {</span>
+<span id="L8"><span class="lineNum">       8</span>              :   final String body;</span>
+<span id="L9"><span class="lineNum">       9</span>              :   final int statusCode;</span>
+<span id="L10"><span class="lineNum">      10</span>              :   final CurtHttpHeaders headers;</span>
+<span id="L11"><span class="lineNum">      11</span>              :   final List&lt;Cookie&gt; cookies;</span>
+<span id="L12"><span class="lineNum">      12</span>              : </span>
+<span id="L13"><span class="lineNum">      13</span>              :   ///</span>
+<span id="L14"><span class="lineNum">      14</span>              :   ///</span>
+<span id="L15"><span class="lineNum">      15</span>              :   ///</span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">           1 :   CurtResponse(</span></span>
+<span id="L17"><span class="lineNum">      17</span>              :     this.body,</span>
+<span id="L18"><span class="lineNum">      18</span>              :     this.statusCode, {</span>
+<span id="L19"><span class="lineNum">      19</span>              :     required this.headers,</span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           1 :   }) : cookies = headers.cookies;</span></span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              :   ///</span>
+<span id="L23"><span class="lineNum">      23</span>              :   ///</span>
+<span id="L24"><span class="lineNum">      24</span>              :   ///</span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC tlaBgUNC">           0 :   CurtResponse.onError({this.body = '', this.statusCode = 500})</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC">           0 :       : headers = CurtHttpHeaders(),</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :         cookies = &lt;Cookie&gt;[];</span></span>
+<span id="L28"><span class="lineNum">      28</span>              : }</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
 
-  <table width="100%" border=0 cellspacing=0 cellpadding=0>
-    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
-    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
-  </table>
-  <br>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
 
 </body>
 </html>
