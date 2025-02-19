@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:curt/src/curt.dart';
@@ -21,11 +22,32 @@ void main() {
 
       final TestainersHttpbucket container = TestainersHttpbucket();
 
+      const String server = 'localhost';
+
       const Map<String, String> headers = <String, String>{
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Curt-Header': 'curt',
       };
 
-      const String server = 'localhost';
+      const Map<String, dynamic> jsonBody = <String, dynamic>{
+        'integer': 1,
+        'double': 1.002,
+        'string': 'text',
+        'bool': true,
+      };
+
+      void checkJsonBody(CurtResponse response) {
+        final Map<dynamic, dynamic> map = jsonDecode(response.body);
+
+        expect(map['body'], jsonBody);
+
+        for (final MapEntry<String, String> entry in headers.entries) {
+          expect(
+            map['headers'],
+            containsPair(entry.key, contains(entry.value)),
+          );
+        }
+      }
 
       ///
       setUpAll(() async {
@@ -226,6 +248,32 @@ void main() {
         expect(response.statusCode, 500);
         expect(response.headers, isNotEmpty);
         expect(response.body, isEmpty);
+      });
+
+      test('Json HTTP POST', () async {
+        final CurtResponse response = await curt.postJson(
+          Uri.parse('http://$server:${container.httpPort}/methods'),
+          contentType: 'application/json;charset=utf-8',
+          headers: headers,
+          body: jsonBody,
+        );
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+        checkJsonBody(response);
+      });
+
+      test('Json HTTP PUT', () async {
+        final CurtResponse response = await curt.putJson(
+          Uri.parse('http://$server:${container.httpPort}/methods'),
+          contentType: 'application/json;charset=utf-8',
+          headers: headers,
+          body: jsonBody,
+        );
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isNotEmpty);
+        checkJsonBody(response);
       });
 
       test('Body Length 123', () async {

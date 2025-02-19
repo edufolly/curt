@@ -207,5 +207,4 @@ class CurtHttpHeaders implements HttpHeaders {
         .map((MapEntry<String, String> entry) => Cookie(entry.key, entry.value))
         .toList();
   }
-
 }
