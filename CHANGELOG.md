@@ -1,3 +1,9 @@
+## 0.2.1 (2025-02-19)
+
+- Adding a `CurtResponse.onError` named constructor to handle error cases
+  without exposing `CurtHttpHeaders`.
+- Updating dependencies.
+
 ## 0.2.0 (2024-05-26)
 
 - Updating dependencies.
