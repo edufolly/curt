@@ -3,6 +3,7 @@
 - Adding `CurtMethod` Enum.
 - Adding method `head`.
 - Adding new tests.
+- Adding maxRedirects property.
 
 ## 0.2.1 (2025-02-19)
 

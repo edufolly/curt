@@ -19,6 +19,7 @@ class Curt {
   final bool insecure;
   final bool silent;
   final bool followRedirects;
+  final int? maxRedirects;
   final bool linuxOpensslTLSOverride;
   final int timeout;
 
@@ -31,6 +32,7 @@ class Curt {
     this.insecure = false,
     this.silent = true,
     this.followRedirects = false,
+    this.maxRedirects,
     this.linuxOpensslTLSOverride = false,
     this.timeout = 10000,
   }) {
@@ -68,36 +70,44 @@ class Curt {
     List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) async {
-    final List<String> args = <String>['-v'];
+    final List<String> args = <String>['--verbose'];
 
     switch (method) {
       case CurtMethod.HEAD:
         args.add('--head');
         break;
       default:
-        args.addAll(<String>['-X', method.name]);
+        args
+          ..add('--request')
+          ..add(method.name);
         break;
     }
 
     /// Insecure
     if (insecure) {
-      args.add('-k');
+      args.add('--insecure');
     }
 
     /// Silent
     if (silent) {
-      args.add('-s');
+      args.add('--silent');
     }
 
     /// Follow Redirects
     if (followRedirects) {
-      args.add('-L');
+      args.add('--location');
+
+      if (maxRedirects != null) {
+        args
+          ..add('--max-redirs')
+          ..add('$maxRedirects');
+      }
     }
 
     /// Headers
     for (final MapEntry<String, String> header in headers.entries) {
       args
-        ..add('-H')
+        ..add('--header')
         ..add('${header.key}: ${header.value}');
     }
 
@@ -111,7 +121,7 @@ class Curt {
     /// Body data
     if (data != null) {
       args
-        ..add('-d')
+        ..add('--data')
         ..add(data);
     }
 
