@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:curt/src/curt_http_headers.dart';
+import 'package:curt/src/curt_method.dart';
 import 'package:curt/src/curt_response.dart';
 
 ///
@@ -62,12 +63,21 @@ class Curt {
   ///
   Future<CurtResponse> send(
     Uri uri, {
-    required String method,
+    required CurtMethod method,
     Map<String, String> headers = const <String, String>{},
     List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) async {
-    final List<String> args = <String>['-v', '-X', method];
+    final List<String> args = <String>['-v'];
+
+    switch (method) {
+      case CurtMethod.HEAD:
+        args.add('--head');
+        break;
+      default:
+        args.addAll(<String>['-X', method.name]);
+        break;
+    }
 
     /// Insecure
     if (insecure) {
@@ -178,7 +188,7 @@ class Curt {
     }
 
     return CurtResponse(
-      run.stdout.toString(),
+      method == CurtMethod.HEAD ? '' : run.stdout.toString(),
       statusCode,
       headers: responseHeaders,
     );
@@ -189,7 +199,7 @@ class Curt {
   ///
   Future<CurtResponse> sendJson(
     Uri uri, {
-    required String method,
+    required CurtMethod method,
     required Map<String, dynamic> body,
     Map<String, String> headers = const <String, String>{},
     List<Cookie> cookies = const <Cookie>[],
@@ -215,7 +225,7 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     List<Cookie> cookies = const <Cookie>[],
   }) =>
-      send(uri, method: 'GET', headers: headers, cookies: cookies);
+      send(uri, method: CurtMethod.GET, headers: headers, cookies: cookies);
 
   ///
   ///
@@ -226,7 +236,13 @@ class Curt {
     List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) =>
-      send(uri, method: 'POST', headers: headers, data: data, cookies: cookies);
+      send(
+        uri,
+        method: CurtMethod.POST,
+        headers: headers,
+        data: data,
+        cookies: cookies,
+      );
 
   ///
   ///
@@ -240,7 +256,7 @@ class Curt {
   }) =>
       sendJson(
         uri,
-        method: 'POST',
+        method: CurtMethod.POST,
         headers: headers,
         body: body,
         cookies: cookies,
@@ -256,7 +272,13 @@ class Curt {
     List<Cookie> cookies = const <Cookie>[],
     String? data,
   }) =>
-      send(uri, method: 'PUT', headers: headers, data: data, cookies: cookies);
+      send(
+        uri,
+        method: CurtMethod.PUT,
+        headers: headers,
+        data: data,
+        cookies: cookies,
+      );
 
   ///
   ///
@@ -270,7 +292,7 @@ class Curt {
   }) =>
       sendJson(
         uri,
-        method: 'PUT',
+        method: CurtMethod.PUT,
         headers: headers,
         body: body,
         cookies: cookies,
@@ -285,7 +307,7 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     List<Cookie> cookies = const <Cookie>[],
   }) =>
-      send(uri, method: 'DELETE', headers: headers, cookies: cookies);
+      send(uri, method: CurtMethod.DELETE, headers: headers, cookies: cookies);
 
   ///
   ///
@@ -295,5 +317,5 @@ class Curt {
     Map<String, String> headers = const <String, String>{},
     List<Cookie> cookies = const <Cookie>[],
   }) =>
-      send(uri, method: 'HEAD', headers: headers, cookies: cookies);
+      send(uri, method: CurtMethod.HEAD, headers: headers, cookies: cookies);
 }

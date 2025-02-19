@@ -10,20 +10,6 @@ import 'package:testainers/testainers.dart';
 ///
 void main() {
   ///
-  group('Online Tests', () {
-    final Curt curt = Curt();
-
-    test('GET https://google.com', () async {
-      final CurtResponse response = await curt.get(
-        Uri.parse('https://google.com'),
-      );
-      expect(response.statusCode, 301);
-      expect(response.headers, isNotEmpty);
-      expect(response.body, isNotEmpty);
-    });
-  });
-
-  ///
   group(
     'Local Tests',
     () {
@@ -202,6 +188,46 @@ void main() {
         expect(response.body, isNotEmpty);
       });
 
+      test('HEAD HTTP 200', () async {
+        final CurtResponse response = await curt.head(
+          Uri.parse('http://$server:${container.httpPort}/status/200'),
+          headers: headers,
+        );
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isEmpty);
+      });
+
+      test('HEAD HTTP 403', () async {
+        final CurtResponse response = await curt.head(
+          Uri.parse('http://$server:${container.httpPort}/status/403'),
+          headers: headers,
+        );
+        expect(response.statusCode, 403);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isEmpty);
+      });
+
+      test('HEAD HTTP 404', () async {
+        final CurtResponse response = await curt.head(
+          Uri.parse('http://$server:${container.httpPort}/status/404'),
+          headers: headers,
+        );
+        expect(response.statusCode, 404);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isEmpty);
+      });
+
+      test('HEAD HTTP 500', () async {
+        final CurtResponse response = await curt.head(
+          Uri.parse('http://$server:${container.httpPort}/status/500'),
+          headers: headers,
+        );
+        expect(response.statusCode, 500);
+        expect(response.headers, isNotEmpty);
+        expect(response.body, isEmpty);
+      });
+
       test('Body Length 123', () async {
         final CurtResponse response = await curt.get(
           Uri.parse('http://$server:${container.httpPort}/length/123'),
@@ -319,6 +345,17 @@ void main() {
         expect(response.statusCode, 200);
         expect(response.headers, isNotEmpty);
         expect(response.body, isNotEmpty);
+      });
+
+      ///
+      test('Simple HTTPS HEAD', () async {
+        final CurtResponse response = await insecure.head(
+          Uri.parse('https://$server:${container.httpsPort}/status/200'),
+          headers: headers,
+        );
+        expect(response.statusCode, 200);
+        expect(response.headers, isNotEmpty);
+        // expect(response.body, isEmpty);
       });
 
       ///

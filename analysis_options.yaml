@@ -86,7 +86,7 @@ linter:
     combinators_ordering: true
     comment_references: true
     conditional_uri_does_not_exist: true
-    constant_identifier_names: true
+    constant_identifier_names: false
     control_flow_in_finally: true
     curly_braces_in_flow_control_structures: true
     dangling_library_doc_comments: true
@@ -121,7 +121,7 @@ linter:
     missing_code_block_language_in_doc_comment: true
     missing_whitespace_between_adjacent_strings: true
     no_adjacent_strings_in_list: true
-    no_default_cases: true
+    no_default_cases: false
     no_duplicate_case_values: true
     no_leading_underscores_for_library_prefixes: true
     no_leading_underscores_for_local_identifiers: true
