@@ -286,4 +286,14 @@ class Curt {
     List<Cookie> cookies = const <Cookie>[],
   }) =>
       send(uri, method: 'DELETE', headers: headers, cookies: cookies);
+
+  ///
+  ///
+  ///
+  Future<CurtResponse> head(
+    Uri uri, {
+    Map<String, String> headers = const <String, String>{},
+    List<Cookie> cookies = const <Cookie>[],
+  }) =>
+      send(uri, method: 'HEAD', headers: headers, cookies: cookies);
 }

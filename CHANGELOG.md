@@ -1,3 +1,7 @@
+## 0.2.2 ()
+
+- Adding method `head`.
+
 ## 0.2.1 (2025-02-19)
 
 - Adding a `CurtResponse.onError` named constructor to handle error cases
