@@ -1,6 +1,6 @@
 name: curt
 description: A convenient package that allows developers to interact with the curl command within elegance of the Dart programming language.
-version: 0.2.0
+version: 0.2.1
 repository: https://github.com/edufolly/curt
 
 environment:
@@ -23,5 +23,4 @@ dev_dependencies:
   test: ^1.25.15
 
   # https://pub.dev/packages/testainers
-  # testainers: ^0.1.1
   testainers: ^0.2.0
